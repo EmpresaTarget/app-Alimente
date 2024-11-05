@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doador | Alimente</title>
     <link rel="stylesheet" href="/css/doador.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
+
+    
    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
         #map {
@@ -26,7 +32,7 @@
 
 /* Card Individual */
 .info-card {
-    background: linear-gradient(135deg, #4b79a1, #283e51);
+    background: linear-gradient(135deg, #4f7942, #2c5f2d);
     color: #fff;
     border-radius: 15px;
     padding: 25px;

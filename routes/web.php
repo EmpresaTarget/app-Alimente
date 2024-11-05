@@ -141,6 +141,7 @@ Route::get('/prestarContaOng', [OngController::class, 'prestarConta'])->middlewa
 Route::post('/prestar-conta', [PrestacaoContasController::class, 'store'])->middleware('auth')->name('prestar-conta.store');
 
 
+Route::get('/prestacaoContaAdm', [PrestacaoContasController::class, 'index'])->name('prestacaoContaAdm');
 // Rotas para campanhas
 Route::middleware('auth')->group(function () {
     // Rota para exibir todas as campanhas

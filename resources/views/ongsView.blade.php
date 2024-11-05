@@ -21,6 +21,8 @@
         <li><a href="{{ route('admin.dashboard') }}"><i class="bi bi-columns-gap"></i> Dashboard</a></li>
         <li><a href="{{ route('admin.doadores') }}"><i class="bi bi-person"></i> Doadores</a></li>
         <li><a href="{{ route('admin.ongs') }}"><i class="bi bi-people"></i> Ongs</a></li>
+        <li><a href="{{ route('prestacaoContaAdm') }}"><i class="bi bi-file-earmark-text"></i> Prestações de conta</a></li>
+
     </ul>
 </div>
 

@@ -44,6 +44,9 @@
             </a>
         </li>
 
+        <li><a href="{{ route('prestacaoContaAdm') }}"><i class="bi bi-file-earmark-text"></i> Prestações de conta</a></li>
+
+
     </ul>
 </div>
 

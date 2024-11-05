@@ -18,8 +18,11 @@ class PrestacaoConta extends Model
         'fotos',
     ];
 
-    public function ong()
-    {
-        return $this->belongsTo(Ong::class);
-    }
+   // app/Models/PrestacaoContas.php
+
+public function ong()
+{
+    return $this->belongsTo(Ong::class, 'idOng', 'idOng'); // Relaciona com a tabela ongs
+}
+
 }

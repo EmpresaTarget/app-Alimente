@@ -4,19 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\PrestacaoConta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PrestacaoContasController extends Controller
 {
     public function store(Request $request)
 {
+
+    $user = Auth::user(); // Obtém o usuário logado
+    $idOng = $user->idOng; 
+
     // Validação dos arquivos
     $request->validate([
         'idOng' => 'required|exists:ong,idOng', // Validação do idOng
-        'balanco' => 'required|file|mimes:pdf,doc,docx,xlsx,xls',
-        'demonstracao' => 'required|file|mimes:pdf,doc,docx,xlsx,xls',
-        'receitas' => 'required|file|mimes:pdf,doc,docx,xlsx,xls',
-        'despesas' => 'required|file|mimes:pdf,doc,docx,xlsx,xls',
+        'balanco' => 'required|file|mimes:pdf,doc,docx,xlsx,xls,jpg',
+        'demonstracao' => 'required|file|mimes:pdf,doc,docx,xlsx,xls,jpg',
+        'receitas' => 'required|file|mimes:pdf,doc,docx,xlsx,xls,jpg',
+        'despesas' => 'required|file|mimes:pdf,doc,docx,xlsx,xls,jpg',
         'fotos.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB máximo por foto
     ]);
 
@@ -30,7 +35,7 @@ class PrestacaoContasController extends Controller
     $fotosPaths = [];
     if ($request->hasFile('fotos')) {
         foreach ($request->file('fotos') as $foto) {
-            $fotosPaths[] = $foto->store('storage/prestacao');
+            $fotosPaths[] = $foto->store('prestacoes_contas/fotos'); // Corrigido o caminho
         }
     }
 
@@ -45,6 +50,13 @@ class PrestacaoContasController extends Controller
     ]);
 
     return redirect()->back()->with('success', 'Prestação de contas enviada com sucesso!');
+}
+
+public function index()
+{
+    $prestacoes = PrestacaoConta::with('ong')->get(); // Carrega as prestações de contas com as ONGs
+
+    return view('prestacaoContaAdm', compact('prestacoes'));
 }
 
 }

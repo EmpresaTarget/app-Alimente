@@ -79,11 +79,9 @@
         </ul>
     </div>
 @endif
-<div>
-    <label for="idOng">ID da ONG:</label>
-    <input type="text" name="idOng" id="idOng" required>
-</div>
+<input type="hidden" name="idOng" value="{{ Auth::user()->idOng }}">
 
+<div class="container-content">
     <div class="container-left">
         <h3>Movimentações:</h3>
         <label for="balanco">Balanço Patrimonial:</label>
@@ -112,6 +110,7 @@
             <input type="file" name="despesas" id="despesas" required>
             <i class="fas fa-cloud-upload-alt"></i>
         </div>
+    </div>
     </div>
 
     <div class="container-fotos">

@@ -2,7 +2,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Quicksand', sans-serif;
-    overflow-y: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 * {
@@ -219,7 +220,7 @@ body {
 }
 
 .wrapper .container {
-    width: calc(100% - 210px);
+    width: calc(100% - 190px);
     margin-top: 55px;
     margin-left: 210px;
     background: #ffffff;
@@ -233,8 +234,12 @@ body {
 }
 
 .container-left, .container-right {
-    width: 47%;
+    width: 100%;
     flex-direction: column;
+}
+
+.container-left {
+    margin-right: 40px;
 }
 
 .container-left h3, .container-right h3{
@@ -305,7 +310,7 @@ label {
 }
 
 .container-fotos {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 /* Alinhar os inputs em linha */

@@ -291,27 +291,7 @@ function showLogoutModal() {
 
 
 
-<!--Autorização    -->
 
-
-    <div class="login-container">
-        <h2>Login da ONG</h2>
-        <form id="login-form">
-            <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
-            </div>
-
-            <div class="input-group">
-                <label for="senha">Senha</label>
-                <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
-            </div>
-
-            <button type="submit" class="btn">Entrar</button>
-
-            <div class="error-message" id="error-message"></div>
-        </form>
-    </div>
 
 
 
@@ -475,47 +455,7 @@ $(document).ready(function() {
     const csrfToken = "{{ csrf_token() }}";
 
 
-// autorização 
 
-    document.getElementById("login-form").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
-    const errorMessageElement = document.getElementById("error-message");
-
-    // Limpar mensagens de erro anteriores
-    errorMessageElement.textContent = '';
-
-    // Validar campos
-    if (!email || !senha) {
-        errorMessageElement.textContent = 'Preencha todos os campos!';
-        return;
-    }
-
-    // Enviar dados para o backend (alterar URL para o seu endpoint)
-    fetch('/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email, senha: senha })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert(data.message); // Exibir mensagem de sucesso
-        }
-        if (data.token) {
-            // Caso o login seja bem-sucedido, podemos armazenar o token
-            localStorage.setItem('authToken', data.token);
-            window.location.href = '/dashboard'; // Redireciona para o dashboard ou página principal
-        }
-    })
-    .catch(error => {
-        errorMessageElement.textContent = 'Erro ao autenticar. Tente novamente.';
-    });
-});
 
 </script>
 </body>

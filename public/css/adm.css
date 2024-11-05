@@ -406,6 +406,56 @@ td {
     color: rgb(63, 135, 243);
 }
 
+/* Estilo para os cards de notificação */
+.card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px;
+    margin: 10px;
+    width: 100%;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+/* Título do card */
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(74, 110, 163); /* Azul para destaque do nome da ONG */
+    margin-bottom: 10px;
+}
+
+/* Texto do card */
+.card-text {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.card-text span{
+    color: #073669;
+    font-weight: 600;
+}
+
+/* Estilo para o status */
+.card-text strong {
+    color: rgb(68, 196, 56); /* Verde para o status de "Em dia!" */
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
     .feed-dash {

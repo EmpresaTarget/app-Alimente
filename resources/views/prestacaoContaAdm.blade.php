@@ -44,10 +44,9 @@
         @foreach($prestacoes as $prestacao)
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="{{ asset('storage/' . $prestacao->fotos) }}" class="card-img-top" alt="Foto da ONG">
                     <div class="card-body">
                         <h5 class="card-title">{{ $prestacao->ong->nomeOng }}</h5> <!-- Nome da ONG -->
-                        <p class="card-text">A ONG {{ $prestacao->ong->nomeOng }} fez sua prestação de contas.</p>
+                        <p class="card-text">A ONG <span>{{ $prestacao->ong->nomeOng }}</span> fez sua prestação de contas.</p>
                         <p class="card-text"><strong>Status:</strong> Em dia!</p>
                     </div>
                 </div>

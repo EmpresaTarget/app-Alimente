@@ -12,102 +12,131 @@
 
     
    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <style>
+   <style>
+        /* Estilos da Navbar */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .top_navbar {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: #ffffff;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .top_navbar .hamburguer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 70px;
+            background-color: #2e8b57;
+            padding: 10px;
+            border-top-right-radius: 20px;
+            cursor: pointer;
+        }
+
+        .top_navbar .hamburguer div {
+            width: 30px;
+            height: 4px;
+            background: #8fbc8f;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .top_menu {
+            width: calc(100% - 70px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 60px; /* Abaixo da navbar */
+            left: 0;
+            width: 200px; /* Largura da sidebar */
+            height: calc(100% - 60px);
+            background: #f8f9fa;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li .icon {
+            margin-right: 10px;
+        }
+
+        /* Outros estilos já existentes */
         #map {
-            height: 600px; /* Altura do mapa */
-            width: 100%;   /* Largura do mapa */
+            height: 400px;
+            width: calc(100% - 220px); /* Considerando a sidebar */
+            margin-left: 210px; /* Margem para a sidebar */
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-/* Container de Cards */
-.info-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 30px;
-    justify-content: center;
-    padding: 10px;
-    max-width: 100%;
-}
 
-/* Card Individual */
-.info-card {
-    background: linear-gradient(135deg, #4f7942, #2c5f2d);
-    color: #fff;
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    width: 100%;
-    max-width: 600px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+        .info-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: flex-start; /* Alinha os cards à esquerda */
+            padding: 5px;
+            max-width: calc(100% - 320px); /* Considerando a sidebar */
+            margin-left: 320px; /* Margem para a sidebar */
+        }
 
-/* Efeito de Hover no Card */
-.info-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-}
+        /* Card Individual */
+        .info-card {
+            background: linear-gradient(135deg, #4f7942, #2c5f2d);
+            color: #fff;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-/* Ícone no Topo do Card */
-.card-icon {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    padding: 15px;
-    display: inline-block;
-    color: #ffffff;
-}
-
-/* Título e Texto Inicial do Card */
-.info-card h3 {
-    font-size: 1.75rem;
-    margin: 10px 0;
-    color: #fffa;
-    letter-spacing: 1px;
-}
-
-.card-content {
-    font-size: 1rem;
-    color: #e0e0e0;
-    line-height: 1.6;
-    transition: opacity 0.3s ease;
-}
-
-/* Texto Extra ao Passar o Mouse */
-.card-content-hover {
-    font-size: 1rem;
-    color: #fff;
-    line-height: 1.6;
-    opacity: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    padding: 15px;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
-    transition: opacity 0.3s ease;
-    pointer-events: none; /* Garante que o hover funcione no card */
-}
-
-/* Mostrar Texto Extra e Ocultar o Texto Original ao Hover */
-.info-card:hover .card-content-hover {
-    opacity: 1;
-}
-
-.info-card:hover .card-content {
-    opacity: 0;
-}
-
-
-
+        h1 {
+            font-size: 1.8rem;
+            color: #4f7942;
+            text-align: center;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            font-family: 'Quicksand', sans-serif;
+            letter-spacing: 1px;
+        }
     </style>
-
        <!--icon-->
        <link rel="shortcut icon" href="/img/icon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -118,9 +147,60 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
 </head>
 <body> 
+<div class="wrapper">
+    <div class="top_navbar">
+        <div class="hamburguer">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="top_menu">
+            <div class="logo">
+                <img src="/img/alimente.png" alt="">
+            </div>
+            <li>
+                <form action="{{ route('logout') }}" method="POST" id="logoutForm" style="display: inline;">
+            @csrf
+           <button type="button" href="/logindoador" class="logout-button">
+                <i class="fa-solid fa-right-from-bracket menu-icon"></i> Logout
+            </button>
+        </form></li>
+        </div>
+    </div>
 
-<h1>Localização Atual e ONGs</h1>
-<div id="map"></div>
+    <div class="sidebar">
+        <ul>
+            <li><a href="#">
+                <span class="icon"><i class="fa-solid fa-house"></i></span>
+                <span class="title">Início</span>
+            </a></li>
+
+            <li><a href="/perfilDoador">
+                <span class="icon"><i class="fa-solid fa-user"></i></span>
+                <span class="title">Perfil</span>
+            </a></li>
+
+            <li><a href="/geolocalizacao">
+                <span class="icon"><i class="fa-solid fa-location-dot"></i></span>
+                <span class="title">Buscar</span>
+            </a></li>
+        </ul>
+    </div>
+
+    <h1>Localização Atual e ONGs</h1>
+    <div id="map"></div>
+    <!-- Modal de Confirmação de Logout -->
+<div id="logoutModal" class="modal-logout" style="display: none;">
+    <div class="modal-content-logout">
+        <h3>Confirmar Logout</h3>
+        <p>Você tem certeza de que deseja sair?</p>
+        <form action="{{ route('logout') }}" method="POST" id="logoutForm" style="display: inline;">
+            @csrf
+            <button type="submit" class="confirm-button">Confirmar</button>
+        </form>
+        <button type="button" onclick="closeLogoutModal()" class="cancel-button">Cancelar</button>
+    </div>
+</div>
 
 <!-- API do Google Maps -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8YyZUk2tSHm0ON3oPDGWKogkEepg2e00&callback=initMap" async defer></script>
@@ -130,9 +210,6 @@
     const ongs = [
         { nome: "Amigos da Paz", latitude: -23.561414, longitude: -46.656856, descricao: "Doações para animais" },
         { nome: "Refazendo Histórias", latitude: -23.563312, longitude: -46.660212, descricao: "Proteção infantil" },
-        { nome: "ONG Esperança", latitude: -23.557125, longitude: -46.651989, descricao: "Apoio a famílias" },
-        { nome: "ONG Reciclar para Viver", latitude: -23.564937, longitude: -46.646228, descricao: "Educação ambiental" },
-        { nome: "ONG Saúde para Todos", latitude: -23.551762, longitude: -46.654204, descricao: "Atendimento médico gratuito" }
     ];
 
     function initMap() {
@@ -208,6 +285,7 @@
         <p class="card-content">Receba dicas de uso para aproveitar ao máximo o sistema de localização e otimizar sua experiência.</p>
         <div class="card-content-hover">Dica Pro: use o modo de visualização em tela cheia para uma experiência mais imersiva! Se precisar de ajuda, consulte nossa seção de FAQ ou entre em contato com o suporte.</div>
     </div>
+</div>
 </div>
 </body>
 </html>

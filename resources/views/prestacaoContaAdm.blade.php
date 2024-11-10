@@ -42,9 +42,11 @@
 
     <div class="row">
         @foreach($prestacoes as $prestacao)
-            <div class="col-12 mb-4">
-                <div class="card-prestacao">
+            <div class="col-md-4 mb-4">
+                <div class="card">
                     <div class="card-body">
+                        <h5 class="card-title">{{ $prestacao->ong->nomeOng }}</h5> <!-- Nome da ONG -->
+                        <p class="card-text">A ONG <span>{{ $prestacao->ong->nomeOng }}</span> fez sua prestação de contas.</p>
                         <h5 class="card-title">{{ $prestacao->ong->nomeOng }}</h5> 
                         <p class="card-text">A ONG <span>{{ $prestacao->ong->nomeOng }}</span> fez sua prestação de contas na data <b>{{$prestacao->created_at}}</b>.</p>
                         <p class="card-text"><strong>Status:</strong> Em dia!</p>

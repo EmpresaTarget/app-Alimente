@@ -307,6 +307,12 @@ function showLogoutModal() {
   </div>
 </div>
 
+
+
+
+
+
+
 <script src="/js/postOng.js"></script>
 <script src="/js/novaCampanha.js"></script>
 <script src="/js/notificacao.js"></script>
@@ -462,5 +468,14 @@ $(document).ready(function() {
                 });
 
             </script>
+            <script>
+
+
+    const csrfToken = "{{ csrf_token() }}";
+
+
+
+
+</script>
 </body>
 </html>

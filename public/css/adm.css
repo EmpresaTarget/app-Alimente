@@ -32,8 +32,8 @@ body {
     height: 100px;
     width: 200px;
     aspect-ratio: 4/3;
-    object-fit: contain;
-    
+    object-fit: cover;
+    object-position: center;
 }
 
 .sidebar ul a {
@@ -105,17 +105,19 @@ ul li {
 .cards-row {
     display: flex;
     justify-content: space-between;
-    gap: 15px;
+    gap: 13px;
+    margin-bottom: 25px;
 }
 
 .card-dash {
     background-color: #ffffff;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
     border-radius: 8px;
-    margin: 20px;
+    margin: 10px;
     flex: 1;
     box-shadow: 0 4px 8px rgba(46, 46, 46, 0.39);
+
 }
 .card-dash .corDoador{
     color: rgb(68, 196, 56);
@@ -124,6 +126,15 @@ ul li {
 .card-dash .corOng{
     color: rgb(63, 135, 243);
 }
+
+.card-dash .corPost{
+    color: rgb(160, 13, 13);
+}
+
+.card-dash .corCamp{
+    color: rgb(146, 23, 23);
+}
+
 .card-dash i h4 h3{
 text-align: center;
 }
@@ -407,7 +418,7 @@ td {
 }
 
 /* Estilo para os cards de notificação */
-.card {
+.card-prestacao {
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -448,7 +459,7 @@ td {
 
 .card-text span{
     color: #073669;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 /* Estilo para o status */

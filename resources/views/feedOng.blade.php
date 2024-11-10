@@ -28,9 +28,17 @@ function showLogoutModal() {
     function closeLogoutModal() {
         document.getElementById('logoutModal').style.display = 'none';
     }
+        
+
+        const buttons = document.querySelectorAll('.hashtag-btn');
+
+        buttons.forEach(button => {
+    button.addEventListener('click', function() {
+        button.classList.add('clicked'); // Adiciona a classe 'clicked' ao botão
+    });
+});
+
         });
-
-
     </script>
 
     <!--icon-->
@@ -130,6 +138,16 @@ function showLogoutModal() {
             </div>
 
 <!--modais-->
+<div id="notification" class="notification hidden">
+  <div class="notification-content">
+    <span class="notification-icon">⚠️</span>
+    <h2 class="notification-title">PROVE SUA VERACIDADE</h2>
+    <p class="notification-text">Opa, você não realizou sua prestação de contas ainda!</p>
+    <button class="notification-close" onclick="hideNotification()">Fechar</button>
+    <button class="notification-open"><a href="/prestarContaOng">Bora</a></button>
+  </div>
+</div>
+
 <!-- Modal de Confirmação -->
 <div id="logoutModal" class="modal" style="display: none;">
     <div class="modal-content">
@@ -289,34 +307,9 @@ function showLogoutModal() {
   </div>
 </div>
 
-
-
-<!--Autorização    -->
-
-
-    <div class="login-container">
-        <h2>Login da ONG</h2>
-        <form id="login-form">
-            <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
-            </div>
-
-            <div class="input-group">
-                <label for="senha">Senha</label>
-                <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
-            </div>
-
-            <button type="submit" class="btn">Entrar</button>
-
-            <div class="error-message" id="error-message"></div>
-        </form>
-    </div>
-
-
-
 <script src="/js/postOng.js"></script>
 <script src="/js/novaCampanha.js"></script>
+<script src="/js/notificacao.js"></script>
 
 <!--excluir campanha-->
 <script>
@@ -469,54 +462,5 @@ $(document).ready(function() {
                 });
 
             </script>
-            <script>
-
-
-    const csrfToken = "{{ csrf_token() }}";
-
-
-// autorização 
-
-    document.getElementById("login-form").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
-    const errorMessageElement = document.getElementById("error-message");
-
-    // Limpar mensagens de erro anteriores
-    errorMessageElement.textContent = '';
-
-    // Validar campos
-    if (!email || !senha) {
-        errorMessageElement.textContent = 'Preencha todos os campos!';
-        return;
-    }
-
-    // Enviar dados para o backend (alterar URL para o seu endpoint)
-    fetch('/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email, senha: senha })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert(data.message); // Exibir mensagem de sucesso
-        }
-        if (data.token) {
-            // Caso o login seja bem-sucedido, podemos armazenar o token
-            localStorage.setItem('authToken', data.token);
-            window.location.href = '/dashboard'; // Redireciona para o dashboard ou página principal
-        }
-    })
-    .catch(error => {
-        errorMessageElement.textContent = 'Erro ao autenticar. Tente novamente.';
-    });
-});
-
-</script>
 </body>
 </html>

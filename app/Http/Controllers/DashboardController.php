@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Doador;
 use App\Models\Ong;
+use App\Models\Campanha;
+use App\Models\Postagem;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -14,6 +16,8 @@ class DashboardController extends Controller
 
         $doadores = Doador::all()->count();
         $ong = Ong::all()->count();
+        $campanha = Campanha::all()->count();
+        $postagem = Postagem::all()->count();
 
         // Gráfico 1 = doadores
         $DoadorData = Doador::select([
@@ -63,6 +67,6 @@ class DashboardController extends Controller
         $ongAno = implode(',', $anoOng);
         $ongTotal = implode(',', $totalOng);
 
-        return view('feedAdm', compact('doadores', 'doadorLabel', 'doadorAno', 'doadorTotal', 'ong', 'ongLabel', 'ongAno', 'ongTotal'));
+        return view('feedAdm', compact('doadores', 'doadorLabel', 'doadorAno', 'doadorTotal', 'ong', 'ongLabel', 'ongAno', 'ongTotal', 'campanha', 'postagem'));
     }
 }

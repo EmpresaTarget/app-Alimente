@@ -57,6 +57,8 @@
         <div class="row cards-row">
             <div class="card-dash"><i class="bi bi-arrow-up-circle-fill"></i><h4>Doadores</h4><h3 class="corDoador">{{$doadores}}</h3></div>
             <div class="card-dash"><i class="bi bi-arrow-down-circle-fill"></i><h4>Ongs</h4><h3 class="corOng">{{$ong}}</h3></div>
+            <div class="card-dash"><i class="bi bi-chat-square-heart-fill"></i><h4>Campanhas</h4><h3 class="corPost">{{$campanha}}</h3></div>
+            <div class="card-dash"><i class="bi bi-camera-fill"></i><h4>Postagens</h4><h3 class="corCamp">{{$postagem}}</h3></div>
             <div class="card-dash"><i class="bi bi-currency-dollar"></i><h4>Doações</h4><h3>0</h3></div>
         </div>
 

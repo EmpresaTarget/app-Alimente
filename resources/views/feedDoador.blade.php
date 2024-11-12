@@ -21,11 +21,13 @@
             });
         });
 
-    document.querySelector('.user').addEventListener('click', function() {
-    const dropdownMenu = this.querySelector('.dropdown-menu');
-    dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
-});
-
+        const userElement = document.querySelector('.user');
+if (userElement) {
+    userElement.addEventListener('click', function() {
+        const dropdownMenu = this.querySelector('.dropdown-menu');
+        dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
+    });
+}
     </script>
 
 <script>function showLogoutModal() {

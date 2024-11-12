@@ -12,23 +12,72 @@ use Illuminate\Support\Facades\Auth;
 
 class DoadorController extends Controller
 {
-    public function feed()
-    {
-        $doador = auth()->user(); // Obtém o usuário autenticado
-        // Busca todas as campanhas, incluindo as informações das ONGs
-        $campanhas = Campanha::with('ong')->orderBy('created_at', 'desc')->get(); // Certifique-se de que o relacionamento está definido
-        $postagens = Postagem::with('ong')->orderBy('dataPostagem', 'desc')->get();
-        
-        return view('feedDoador', [
-            'doador' => $doador,
-            'campanhas' => $campanhas,
-            'postagens' => $postagens
-        ]);
+
+    public function atualizarFoto(Request $request)
+{
+    $request->validate([
+        'fotoDoador' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+    ]);
+
+    if ($request->hasFile('fotoDoador')) {
+        $foto = $request->file('fotoDoador');
+        $caminhoFoto = $foto->store('fotos_doador', 'public');
+
+        // Atualize o caminho da foto no banco de dados
+        $doador = Doador::find(auth()->id());
+        $doador->fotoDoador = $caminhoFoto;
+        $doador->save();
+
+        // Retorne a URL da foto para atualizar a visualização no front-end
+        return response()->json(['fotoUrl' => asset('storage/' . $caminhoFoto)]);
     }
+
+    return response()->json(['erro' => 'Falha ao processar a imagem'], 400);
+}
+
+    public function atualizarPerfil(Request $request)
+{
+    $doador = Doador::find(auth()->id());
+
+    $request->validate([
+        'nomeDoador' => 'required|string|max:100',
+        'nomeUsuarioDoador' => 'required|string|max:50',
+        'emailDoador' => 'required|email',
+        'biografiaDoador' => 'nullable|string|max:255',
+    ]);
+
+    $doador->nomeDoador = $request->input('nomeDoador');
+    $doador->nomeUsuarioDoador = $request->input('nomeUsuarioDoador');
+    $doador->emailDoador = $request->input('emailDoador');
+    $doador->biografiaDoador = $request->input('biografiaDoador');
+    $doador->save();
+
+    return response()->json([
+        'message' => 'Perfil atualizado com sucesso',
+        'doador' => $doador // Retorne o doador atualizado
+    ]);
+}
+
+    public function feed()
+{
+    $doador = Doador::find(auth()->id()); // Obtém o usuário logado
+
+    if (!$doador) {
+        return redirect()->route('login')->withErrors(['error' => 'Por favor, faça login para acessar o feed.']);
+    }
+    $doadorId = $doador->idDoador;
+    $doador = Doador::find($doadorId);
     
+    // Certifique-se de que o relacionamento entre Campanha e Ong esteja configurado corretamente
+    $campanhas = Campanha::with('ong')->orderBy('created_at', 'desc')->get();
+    $postagens = Postagem::with('ong')->orderBy('dataPostagem', 'desc')->get();
+
+    return view('feedDoador', compact('doador', 'campanhas', 'postagens'));
+}
+
    public function perfil()
 {
-    $doador = auth()->user();
+    $doador = Doador::find(auth()->id());
 
     if (!$doador) {
         return redirect()->route('login')->withErrors(['error' => 'Por favor, faça login para acessar o perfil.']);

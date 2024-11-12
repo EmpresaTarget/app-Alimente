@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Doador | Alimente</title>
 
     <link rel="stylesheet" href="/css/doadorPerfil.css">
@@ -107,18 +108,35 @@
         </ul>
     </div>
 
+    <!-- Modal de Confirmação de Logout -->
+    <div id="logoutModal" class="modal">
+            <div class="modal-content">
+                <p>Deseja mesmo sair da sessão?</p>
+                <div class="modal-buttons">
+                    <form action="{{ route('logout') }}" method="POST" id="logoutForm" style="display: inline;">
+            @csrf
+            <button type="submit" class="confirm-button">Confirmar</button>
+        </form>
+                    <button id="cancelLogout">Não</button>
+                </div>
+            </div>
+        </div>
+
     <div class="container">
         <!-- Seção de Perfil -->
         <div class="profile">
             <div class="profile-header">
                 <div class="user-img">
-                    <img src="/img/foto malcon.jpeg" id="photo" class="profile-img">
-                    <input type="file" name="" id="file">
+                    <img src="{{ asset('storage/' . $doador->fotoDoador) }}" id="photo" class="profile-img">
+                    <form id="uploadForm" method="POST" action="{{ route('atualizar.foto') }}" enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="fotoDoador" id="file" accept="image/*" style="display: none;">
                     <label for="file" id="uploadbtn"><i class="fas fa-camera"></i></label>
+                    </form>
                 </div>
                 <div class="profile-text-container">
-                    <h1 class="profle-title">Mailcoln Rocha</h1>
-                    <p class="profile-email">maicon14@gmail.com</p>
+                    <h1 class="profle-title">{{$doador->nomeUsuarioDoador}}</h1>
+                    <p class="profile-email">{{$doador->emailDoador}}</p>
                     <p class="status">Doador</p>
                 </div>
             </div>
@@ -136,52 +154,42 @@
             </div>
         </div>
 
-        <!-- Modal de Confirmação de Logout -->
-        <div id="logoutModal" class="modal">
-            <div class="modal-content">
-                <p>Deseja mesmo sair da sessão?</p>
-                <div class="modal-buttons">
-                    <form action="{{ route('logout') }}" method="POST" id="logoutForm" style="display: inline;">
-            @csrf
-            <button type="submit" class="confirm-button">Confirmar</button>
-        </form>
-                    <button id="cancelLogout">Não</button>
-                </div>
-            </div>
-        </div>
-
+        
         <!-- Tela de Configurações de Conta (visível inicialmente) -->
-        <form class="account">
-            <div class="account-header">
-                <h1 class="account-tittle">Informações de conta</h1>
-                <div class="btn-container">
-                    <button type="button" class="btn-cancel">Cancelar</button>
-                    <button type="submit" class="btn-save">Salvar</button>
-                </div>
-            </div>
+        <form class="account" id="doadorForm" method="POST" action="{{ route('doador.atualizarPerfil') }}">
+    @csrf
+    <div class="account-header">
+        <h1 class="account-tittle">Informações de conta</h1>
+        <div class="btn-container">
+            <button type="button" class="btn-cancel">Cancelar</button>
+            <button type="submit" class="btn-save">Salvar</button>
+        </div>
+    </div>
 
-            <div class="account-edit">
-                <div class="input-container">
-                    <label>Nome:</label>
-                    <input type="text" placeholder="Nome" value="Mailcoln Rocha">
-                </div>
-                <div class="input-container">
-                    <label>Nome de usuário:</label>
-                    <input type="text" placeholder="Nome de usuário" value="Maicoln_7">
-                </div>
-                <div class="input-container">
-                    <label>Email:</label>
-                    <input type="email" placeholder="Email" value="maicon14@gmail.com">
-                </div>
-            </div>
+    <div class="account-edit">
+        <div class="input-container">
+            <label>Nome:</label>
+            <input type="text" id="nomeDoador" name="nomeDoador" value="{{$doador->nomeDoador}}">
+        </div>
+        <div class="input-container">
+            <label>Nome de usuário:</label>
+            <input type="text" id="nomeUsuarioDoador" name="nomeUsuarioDoador" value="{{$doador->nomeUsuarioDoador}}">
+        </div>
+        <div class="input-container">
+            <label>Email:</label>
+            <input type="email" id="emailDoador" name="emailDoador" value="{{$doador->emailDoador}}">
+        </div>
+    </div>
 
-            <div class="account-edit">
-                <div class="input-container">
-                    <label>Bio:</label>
-                    <textarea placeholder="Biografia">Doador com foco em alimentos e causas</textarea>
-                </div>
-            </div>
-        </form>
+    <div class="account-edit">
+        <div class="input-container">
+            <label>Bio:</label>
+            <textarea id="biografiaDoador" name="biografiaDoador">{{$doador->biografiaDoador}}</textarea>
+        </div>
+    </div>
+
+</form>
+
 
         <!-- Modal de Confirmação -->
         <div id="confirmationModal" class="modal-perfil" style="display:none;">
@@ -210,5 +218,7 @@
 
 <script src="/js/perfilDoador.js"></script>
 <script src="/js/logoutDoador.js"></script>
+<script src="/js/atualizarDoador.js"></script>
+<script src="/js/atualizarFotoDoador.js"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ong;
 use App\Models\Campanha;
+use App\Models\Postagem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -20,8 +21,12 @@ class FeedOngController extends Controller
 
         // Busca campanhas associadas a essa ONG
         $campanhas = Campanha::where('idOng', $ongId)->get();
+        $postagens = Postagem::where('idOng', $ongId)->get();
 
-        return view('feedOng', compact('campanhas', 'ong'));
+        $campanhasCount = Campanha::where('idOng', $ongId)->count();
+        $postagensCount = Postagem::where('idOng', $ongId)->count();
+
+        return view('feedOng', compact('campanhas', 'postagensCount', 'campanhasCount', 'ong'));
     } else {
         return redirect()->route('logindoador')->withErrors('Você precisa estar logado para ver suas postagens.');
     }

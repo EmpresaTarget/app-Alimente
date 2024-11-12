@@ -36,10 +36,8 @@ class LoginController extends Controller
         $doador = Doador::where('emailDoador', $credentials['email'])->first();
         if ($doador && $doador->senhaDoador === $credentials['password']) {
             Auth::login($doador); // Login do doador
-            $campanhas = Campanha::with('ong')->orderBy('created_at', 'desc')->get(); // Certifique-se de que o relacionamento está definido
-            $postagens = Postagem::with('ong')->orderBy('dataPostagem', 'desc')->get();
-            $request->session()->put('redirectToProfile', true);
-            return view('feedDoador', ['doador' => $doador, 'campanhas' => $campanhas, 'postagens' => $postagens]);
+
+            return redirect()->route('feedDoador', ['idDoador' => $doador->id]);
         }
 
         // Tenta autenticar como ONG

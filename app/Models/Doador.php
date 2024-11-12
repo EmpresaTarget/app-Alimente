@@ -46,6 +46,8 @@ class Doador extends Model implements AuthenticatableContract
         return $this->senhaDoador; // Aqui indicamos que a senha vem de senhaDoador
     }
 
+    
+
      // Esses métodos são implementados pelo trait `Authenticatable`
     // Certifique-se de que eles estão corretamente configurados:
 

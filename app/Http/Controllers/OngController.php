@@ -3,11 +3,32 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Ong; 
+use App\Models\Postagem;
 use App\Models\PrestacaoConta;
 use Illuminate\Http\Request;
 
 class OngController extends Controller
 {
+    public function atualizarArrecadacao(Request $request)
+    {
+        // Encontrar a ONG pela ID
+        $ongId = $request->input('ongId'); // ID da ONG
+        $valor = $request->input('valor'); // Valor a ser somado ao total arrecadado
+    
+        // Verifique se a ONG existe
+        $ong = Ong::where('idOng', $ongId)->first();
+    
+        if ($ong) {
+            // Atualiza o total arrecadado somando o valor novo
+            $ong->totalArrecadado += $valor;
+            $ong->save(); // Salva a mudança no banco de dados
+    
+            return response()->json(['success' => true, 'message' => 'Arrecadação atualizada com sucesso!']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'ONG não encontrada.']);
+        }
+    }
+    
 
     public function searchDoador(Request $request)
     {

@@ -31,5 +31,10 @@ class Postagem extends Model
     protected $casts = [
         'dataPostagem' => 'datetime',
     ];
+
+    public function curtidas()
+    {
+        return $this->hasMany(Curtida::class, 'postagem_id', 'idPostagem');
+    }
 }
 

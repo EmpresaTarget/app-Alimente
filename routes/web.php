@@ -13,7 +13,6 @@ use App\Http\Controllers\CampanhaController;
 use App\Http\Controllers\FeedOngController;
 use App\Http\Controllers\FeedDoadorController;
 use App\Http\Controllers\PostagemController;
-use App\Http\Controllers\GeolocalizacaoController;
 use App\Http\Controllers\PrestacaoContasController;
 
 /*
@@ -114,19 +113,21 @@ Route::get('/admin', function() {
 
 /*feed doador*/ 
 
+Route::post('/atualizar-arrecadacao', [OngController::class, 'atualizarArrecadacao']);
+
 Route::post('/doador/perfil/atualizar', [DoadorController::class, 'atualizarPerfil'])->name('doador.atualizarPerfil')->middleware('auth');
-Route::post('/atualizar-foto', [PerfilController::class, 'atualizarFoto'])->name('atualizar.foto')->middleware('auth');
+Route::post('/atualizar-foto', [DoadorController::class, 'atualizarFoto'])->name('atualizar.foto')->middleware('auth');
 
 Route::get('/perfilDoador', [DoadorController::class, 'perfil'])->name('PerfilDoador')->middleware('auth');
 
 Route::get('/feedDoador', [DoadorController::class, 'feed'])->name('feedDoador')->middleware('auth');
 
-//rotas geolocalizaçao
+Route::post('/curtir-postagem/{postId}', [PostagemController::class, 'curtirPostagem']);
+Route::get('/verificar-curtida/{postId}', [PostagemController::class, 'verificarCurtida']);
 
-Route::get('/geolocalizacao', [GeolocalizacaoController::class, 'index'])->name('geolocalizacao.index');
-Route::get('/geolocalizacao/ongs', [GeolocalizacaoController::class, 'buscarOngs']);
-//Route::get('/geolocalizacao/buscar', [GeolocalizacaoController::class, 'buscar'])->name('geolocalizacao.buscar');
-//Route::get('/geo', [MapController::class, 'index'])->name('mapa.index');
+//rotas geolocalizaçao
+Route::get('/geolocalizacao', [MapController::class, 'index'])->name('mapa.geolocalizacao');
+Route::get('/geolocalizacao/ongs-proximas', [MapController::class, 'getOngs'])->name('mapa.ongs_proximas');
 
 /*feed ong*/
 Route::middleware('auth')->group(function () {

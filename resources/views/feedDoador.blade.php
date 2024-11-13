@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Doador | Alimente</title>
 
    <link rel="stylesheet" href="/css/doador.css">
@@ -167,7 +168,7 @@ if (userElement) {
     <div class="feed-container">
     
     @foreach($postagens as $postagem)
-    <div class="card-postagem" data-hashtags="{{ strtolower($postagem->hashtags) }}">
+    <div class="card-postagem" data-post-id="{{ $postagem->idPostagem }}" data-hashtags="{{ strtolower($postagem->hashtags) }}">
         <div class="top">
             <div class="userDetails">
                 <div class="profileImg">
@@ -190,7 +191,7 @@ if (userElement) {
         </div>
         <div class="btns">
             <div class="left">
-            <img class="heart" src="/img/coracao.png" onclick="likeButton()">
+            <img class="heart" src="/img/coracao.png" data-post-id="{{ $postagem->idPostagem }}" alt="Curtir">
             <img src="/img/comentario.webp" alt="">
                 <img src="/img/dinheiro.png" alt="" onclick="showPixModal('{{ $postagem->id }}')">
             </div>
@@ -214,16 +215,27 @@ if (userElement) {
 @endforeach
 
 <!-- Modal -->
-<div id="pixModal" class="modal-pix">
+<div id="pixModal" class="modal-pix" data-post-id="{{ $postagem->idPostagem }}" data-ong-id="{{ $postagem->idOng }}">
     <div class="modal-content-pix">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h2>Chave Pix</h2>
-        <img id="qrcode" src="" alt="QR Code" style="width: 200px; height: 200px;"/>
-        <p id="pixKey"></p>
-        <button id="closeButton" onclick="closeModal()">Fechar</button> <!-- Botão de fechar -->
+        <h2>Chave Pix</h2>
+        <img id="qrcode" src="" alt="QR Code" style="width: 200px; height: 200px; margin-top: 5px;"/>
+        
+        <p id="pixKey" style="margin-top: 6px;"></p>
 
+        <div class="value-buttons">
+            <button class="value-button" onclick="selectValue(this)">R$2,00</button>
+            <button class="value-button" onclick="selectValue(this)">R$5,00</button>
+            <button class="value-button" onclick="selectValue(this)">R$8,00</button>
+            <button class="value-button" onclick="selectValue(this)">R$10,00</button>
+            <button class="value-button" onclick="selectValue(this)">R$15,00</button>
+            <button class="value-button" onclick="selectValue(this)">R$20,00</button>
+        </div>
+
+        <p class="recado">*Você pode escolher um dos nossos valores fixos ou digitar sua contribuição manualmente.</p>
+        <button id="closeButton" onclick="closeModal()">Fechar</button> <!-- Botão de fechar -->
     </div>
 </div>
+
 
 <!-- Modal de Confirmação de Logout -->
 <div id="logoutModal" class="modal-logout" style="display: none;">
@@ -241,7 +253,7 @@ if (userElement) {
 <div id="commentModal" class="modal">
     
   <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
+    <span class="close" onclick="closeModalComent()">&times;</span>
     
     <div class="modal-left">
     @foreach($postagens as $postagem)
@@ -318,6 +330,7 @@ if (userElement) {
     <script src="/js/hora.js"></script>
     <script src="/js/busca.js"></script>
     <script src="/js/pix.js"></script>
+    <script src="/js/arrecadacao.js"></script>
 
     <script>
     const baseUrl = "{{ asset('storage/uploads') }}";
@@ -331,7 +344,7 @@ if (userElement) {
     });
 
     // Fecha o modal
-    function closeModal() {
+    function closeModalComent() {
         document.getElementById("commentModal").style.display = "none";
     }
 
@@ -443,7 +456,25 @@ function filterPosts(hashtag) {
 }
 </script>
 
+<script>
+    // Função para abrir o modal
+    function openModal() {
+        document.getElementById("pixModal").style.display = "block";
+    }
 
+    // Função para fechar o modal
+    function closeModal() {
+        document.getElementById("pixModal").style.display = "none";
+    }
+
+    // Fecha o modal ao clicar fora do conteúdo
+    window.onclick = function(event) {
+        const modal = document.getElementById("pixModal");
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+</script>
 
 </body>
 </html>

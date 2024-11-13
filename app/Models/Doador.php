@@ -41,6 +41,11 @@ class Doador extends Model implements AuthenticatableContract
         'senhaDoador', // Isso esconde a senha de retornos de queries
     ];
 
+    public function curtidas()
+    {
+        return $this->hasMany(Curtida::class, 'doador_id', 'idDoador');
+    }
+
     public function getAuthPassword()
     {
         return $this->senhaDoador; // Aqui indicamos que a senha vem de senhaDoador

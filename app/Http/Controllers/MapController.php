@@ -8,29 +8,39 @@ use Illuminate\Support\Facades\Http;
 
 class MapController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $userCep = $request->input('cep');
+        return view('geolocalizacao');
+    }
+
+    public function getOngs()
+    {
+        $ongs = Ong::select('nomeOng', 'cepOng', 'biografiaOng', 'fotoOng')->get();
+        $googleApiKey = config('services.google.maps_key');
         
-        $ongs = Ong::where('cepOng', $userCep)->get();
+        $ongLocations = [];
 
-        // Obtém coordenadas caso estejam ausentes
         foreach ($ongs as $ong) {
-            if (is_null($ong->latitude) || is_null($ong->longitude)) {
-                $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-                    'address' => $ong->cepOng,
-                    'key' => env('GOOGLE_MAPS_API_KEY'),
-                ]);
-                $data = $response->json();
+            $response = Http::get("https://maps.googleapis.com/maps/api/geocode/json", [
+                'address' => $ong->cepOng,
+                'key' => $googleApiKey
+            ]);
 
-                if (!empty($data['results'])) {
-                    $ong->latitude = $data['results'][0]['geometry']['location']['lat'];
-                    $ong->longitude = $data['results'][0]['geometry']['location']['lng'];
-                    $ong->save();
-                }
+            $locationData = $response->json();
+
+            if ($locationData['status'] === 'OK' && !empty($locationData['results'])) {
+                $coordinates = $locationData['results'][0]['geometry']['location'];
+
+                $ongLocations[] = [
+                    'nome' => $ong->nomeOng,
+                    'latitude' => $coordinates['lat'],
+                    'longitude' => $coordinates['lng'],
+                    'biografia' => $ong->biografiaOng,
+                    'foto' => asset('storage/uploads/' . $ong->fotoOng),
+                ];
             }
         }
 
-        return view('geo', compact('ongs'));
+        return response()->json($ongLocations);
     }
 }

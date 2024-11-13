@@ -33,6 +33,7 @@ class CreateOngTable extends Migration
             $table->string('bairroOng', 100)->nullable();
             $table->string('cidadeOng', 100)->nullable();
             $table->string('estadoOng', 50)->nullable();
+            $table->decimal('totalArrecadado', 15, 2)->default(0.00);
             $table->timestamps();
         });
     }

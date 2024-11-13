@@ -10,8 +10,15 @@ function showPixModal(postagemId) {
     document.getElementById('pixModal').style.display = 'block';
 }
 
+function selectValue(button) {
+    // Remove a classe "selected" de todos os botões
+    document.querySelectorAll('.value-button').forEach(btn => btn.classList.remove('selected'));
+    // Adiciona a classe "selected" ao botão clicado
+    button.classList.add('selected');
+}
+
 function closeModal() {
-    document.getElementById('pixModal').style.display = 'none';
+    document.getElementById("pixModal").style.display = "none";
 }
 
 function generateRandomPixKey() {
@@ -26,10 +33,11 @@ function generateRandomPixKey() {
 
 // Fechar o modal quando o usuário clica fora do modal
 
+// Fecha o modal ao clicar fora do conteúdo
 window.onclick = function(event) {
-    const modal = document.getElementById('pixModal');
+    const modal = document.getElementById("pixModal");
     if (event.target === modal) {
         closeModal();
     }
+};
 
-}

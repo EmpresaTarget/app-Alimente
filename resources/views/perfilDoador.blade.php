@@ -110,30 +110,28 @@
 
     <!-- Modal de Confirmação de Logout -->
     <div id="logoutModal" class="modal">
-            <div class="modal-content">
-                <p>Deseja mesmo sair da sessão?</p>
-                <div class="modal-buttons">
-                    <form action="{{ route('logout') }}" method="POST" id="logoutForm" style="display: inline;">
-            @csrf
-            <button type="submit" class="confirm-button">Confirmar</button>
-        </form>
-                    <button id="cancelLogout">Não</button>
-                </div>
-            </div>
+    <div class="modal-content">
+        <p>Deseja mesmo sair da sessão?</p>
+        <div class="modal-buttons">
+            <form action="{{ route('logout') }}" method="POST" id="logoutForm" style="display: inline;">
+                @csrf
+                <button type="submit" class="confirm-button">Confirmar</button>
+            </form>
+            <button id="cancelLogout">Não</button>
         </div>
+    </div>
+</div>
+
 
     <div class="container">
         <!-- Seção de Perfil -->
         <div class="profile">
             <div class="profile-header">
-                <div class="user-img">
-                    <img src="{{ asset('storage/' . $doador->fotoDoador) }}" id="photo" class="profile-img">
-                    <form id="uploadForm" method="POST" action="{{ route('atualizar.foto') }}" enctype="multipart/form-data">
-                    @csrf
-                    <input type="file" name="fotoDoador" id="file" accept="image/*" style="display: none;">
-                    <label for="file" id="uploadbtn"><i class="fas fa-camera"></i></label>
-                    </form>
-                </div>
+            <div class="user-img">
+            <img src="{{ asset('storage/' . $doador->fotoDoador) }}" id="photo" class="profile-img">
+            <input type="file" name="fotoDoador" id="file" accept="image/*" style="display: none;" onchange="uploadPhoto()">
+            <label for="file" id="uploadbtn"><i class="fas fa-camera"></i></label>
+            </div>
                 <div class="profile-text-container">
                     <h1 class="profle-title">{{$doador->nomeUsuarioDoador}}</h1>
                     <p class="profile-email">{{$doador->emailDoador}}</p>

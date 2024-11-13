@@ -15,25 +15,25 @@ class DoadorController extends Controller
 
     public function atualizarFoto(Request $request)
 {
+    $doador = Doador::find(auth()->id());
+
     $request->validate([
-        'fotoDoador' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+        'fotoDoador' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validação da imagem
     ]);
 
     if ($request->hasFile('fotoDoador')) {
-        $foto = $request->file('fotoDoador');
-        $caminhoFoto = $foto->store('fotos_doador', 'public');
-
-        // Atualize o caminho da foto no banco de dados
-        $doador = Doador::find(auth()->id());
-        $doador->fotoDoador = $caminhoFoto;
-        $doador->save();
-
-        // Retorne a URL da foto para atualizar a visualização no front-end
-        return response()->json(['fotoUrl' => asset('storage/' . $caminhoFoto)]);
+        // Armazena a nova imagem e atualiza o caminho no perfil do doador
+        $path = $request->file('fotoDoador')->store('fotos_doador', 'public');
+        $doador->fotoDoador = $path;
     }
 
-    return response()->json(['erro' => 'Falha ao processar a imagem'], 400);
+    $doador->save();
+
+    return response()->json([
+        'newImageUrl' => asset('storage/' . $doador->fotoDoador),
+    ]);
 }
+
 
     public function atualizarPerfil(Request $request)
 {

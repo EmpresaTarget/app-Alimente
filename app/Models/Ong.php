@@ -52,12 +52,13 @@ class Ong extends Model implements AuthenticatableContract
         'bairroOng',
         'cidadeOng',
         'estadoOng',
-        'latitude',  // Adicionando latitude
-        'longitude'  // Adicionando longitude
+        'latitude', 
+        'longitude',
+        'totalArrecadadoOng'  
     ];
 
     protected $hidden = [
-        'senhaOng', // Isso esconde a senha de retornos de queries
+        'senhaOng', 
     ];
 
     public function getAuthPassword()

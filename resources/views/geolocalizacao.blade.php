@@ -13,92 +13,15 @@
     
    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
    <style>
-        /* Estilos da Navbar */
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-
-        .top_navbar {
-            width: 100%;
-            height: 60px;
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background-color: #ffffff;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-        }
-
-        .top_navbar .hamburguer {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 70px;
-            background-color: #2e8b57;
-            padding: 10px;
-            border-top-right-radius: 20px;
-            cursor: pointer;
-        }
-
-        .top_navbar .hamburguer div {
-            width: 30px;
-            height: 4px;
-            background: #8fbc8f;
-            margin: 5px 0;
-            border-radius: 5px;
-        }
-
-        .top_menu {
-            width: calc(100% - 70px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 10px;
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 60px; /* Abaixo da navbar */
-            left: 0;
-            width: 200px; /* Largura da sidebar */
-            height: calc(100% - 60px);
-            background: #f8f9fa;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar ul li {
-            margin: 10px 0;
-        }
-
-        .sidebar ul li a {
-            text-decoration: none;
-            color: #333;
-            display: flex;
-            align-items: center;
-        }
-
-        .sidebar ul li .icon {
-            margin-right: 10px;
-        }
 
         /* Outros estilos já existentes */
         #map {
             height: 400px;
-            width: calc(100% - 220px); /* Considerando a sidebar */
+            width: calc(100% - 560px); /* Considerando a sidebar */
             margin-left: 210px; /* Margem para a sidebar */
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 60px;
         }
 
         .info-cards {
@@ -108,34 +31,61 @@
             margin-top: 10px;
             justify-content: flex-start; /* Alinha os cards à esquerda */
             padding: 5px;
-            max-width: calc(100% - 320px); /* Considerando a sidebar */
-            margin-left: 320px; /* Margem para a sidebar */
+            max-width: calc(100% - 210px); /* Considerando a sidebar */
+            margin-left: 210px; /* Margem para a sidebar */
         }
 
         /* Card Individual */
-        .info-card {
-            background: linear-gradient(135deg, #4f7942, #2c5f2d);
-            color: #fff;
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-            width: 100%;
-            max-width: 300px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+.info-card {
+    background-color: #fff;
+    color: #333;
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 250px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-        h1 {
-            font-size: 1.8rem;
-            color: #4f7942;
-            text-align: center;
-            margin-top: 15px;
-            margin-bottom: 15px;
-            font-family: 'Quicksand', sans-serif;
-            letter-spacing: 1px;
-        }
+/* Título verde */
+.card-header {
+    background-color: #4f7942; /* Verde */
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+/* Conteúdo do card */
+.card-content {
+    padding: 10px;
+}
+
+/* Link "Ler mais" */
+.read-more {
+    text-decoration: none;
+    color: #4f7942; /* Verde */
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.read-more i {
+    margin-left: 5px;
+}
+
+/* Efeito hover para o link */
+.read-more:hover {
+    color: #2c5f2d; /* Verde mais escuro */
+}
+
     </style>
        <!--icon-->
        <link rel="shortcut icon" href="/img/icon.png" type="image/x-icon">
@@ -170,7 +120,7 @@
 
     <div class="sidebar">
         <ul>
-            <li><a href="#">
+            <li><a href="/feedDoador">
                 <span class="icon"><i class="fa-solid fa-house"></i></span>
                 <span class="title">Início</span>
             </a></li>
@@ -187,105 +137,128 @@
         </ul>
     </div>
 
-    <h1>Localização Atual e ONGs</h1>
-    <div id="map"></div>
-    <!-- Modal de Confirmação de Logout -->
-<div id="logoutModal" class="modal-logout" style="display: none;">
-    <div class="modal-content-logout">
-        <h3>Confirmar Logout</h3>
-        <p>Você tem certeza de que deseja sair?</p>
-        <form action="{{ route('logout') }}" method="POST" id="logoutForm" style="display: inline;">
-            @csrf
-            <button type="submit" class="confirm-button">Confirmar</button>
-        </form>
-        <button type="button" onclick="closeLogoutModal()" class="cancel-button">Cancelar</button>
+    <div class="mapa" id="map"></div><!--mapa-->
+    
+    <div class="info-cards">
+    <div class="info-card">
+        <div class="card-header">
+            <h3>Como Utilizar</h3>
+        </div>
+        <div class="card-content">
+            <a href="#" class="read-more">Ler mais <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="card-header">
+            <h3>Funcionalidades</h3>
+        </div>
+        <div class="card-content">
+            <a href="#" class="read-more">Ler mais <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="card-header">
+            <h3>Dicas Úteis</h3>
+        </div>
+        <div class="card-content">
+            <a href="#" class="read-more">Ler mais <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
     </div>
 </div>
+<!--info-cards-->
 
-<!-- API do Google Maps -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8YyZUk2tSHm0ON3oPDGWKogkEepg2e00&callback=initMap" async defer></script>
-<script>
-    let map;
-    let userMarker;
-    const ongs = [
-        { nome: "Amigos da Paz", latitude: -23.561414, longitude: -46.656856, descricao: "Doações para animais" },
-        { nome: "Refazendo Histórias", latitude: -23.563312, longitude: -46.660212, descricao: "Proteção infantil" },
-    ];
+    <script>
+        let map;
+        let userMarker;
 
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: -23.5505, lng: -46.6333 },
-            zoom: 12
-        });
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: -23.5505, lng: -46.6333 },
+                zoom: 12
+            });
 
-        // Obtendo a localização do usuário
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const userLocation = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
+            // Obtendo a localização do usuário
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
 
-                // Marcando a localização do usuário
-                userMarker = new google.maps.Marker({
-                    position: userLocation,
-                    map: map,
-                    title: "Sua localização",
-                    icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                    const doadorMarkerIcon = {
+                        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                            <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="5" fill="#4285F4" />
+                                <circle cx="20" cy="20" r="15" fill="none" stroke="#4285F4" stroke-width="4" opacity="0.3" />
+                            </svg>
+                        `),
+                        scaledSize: new google.maps.Size(40, 40),
+                        anchor: new google.maps.Point(20, 20)
+                    };
+
+                    userMarker = new google.maps.Marker({
+                        position: userLocation,
+                        map: map,
+                        title: "Sua localização",
+                        icon: doadorMarkerIcon
+                    });
+
+                    map.setCenter(userLocation);
+                    carregarOngsProximas();
+                }, () => {
+                    alert("Não foi possível obter a sua localização.");
                 });
-
-                // Centralizando o mapa na localização do usuário
-                map.setCenter(userLocation);
-
-                // Adicionando marcadores das ONGs
-                colocarMarcadores(ongs);
-            }, () => {
-                alert("Não foi possível obter a sua localização.");
-            });
-        } else {
-            alert("Geolocalização não é suportada pelo seu navegador.");
+            } else {
+                alert("Geolocalização não é suportada pelo seu navegador.");
+            }
         }
-    }
 
-    function colocarMarcadores(ongs) {
-        ongs.forEach(ong => {
-            const marker = new google.maps.Marker({
-                position: { lat: ong.latitude, lng: ong.longitude },
-                map: map,
-                title: ong.nome,
-                icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
-            });
+        function carregarOngsProximas() {
+            $.getJSON('{{ route("mapa.ongs_proximas") }}', function(data) {
+                data.forEach(ong => {
+                    const ongMarkerIcon = {
+                        url: "/img/marcador.png", // URL do ícon
+                        scaledSize: new google.maps.Size(40, 50),  // Tamanho do ícone da ONG
+                        anchor: new google.maps.Point(25, 25),
+                        origin: new google.maps.Point(0, 0),  // Ponto de origem para o redimensionamento
+                        labelOrigin: new google.maps.Point(25, 55)  // Centraliza o ícone no ponto exato
+                    };
 
-            const infoWindow = new google.maps.InfoWindow({
-                content: `<h3>${ong.nome}</h3><p>${ong.descricao}</p>`
-            });
+                    const marker = new google.maps.Marker({
+                        position: { lat: ong.latitude, lng: ong.longitude },
+                        map: map,
+                        icon: ongMarkerIcon
+                    });
 
-            marker.addListener('click', () => {
-                infoWindow.open(map, marker);
+                    const contentString = `
+                        <div class="info-window-content">
+                            <img src="${ong.foto}" alt="Foto de ${ong.nome}">
+                            <h3>${ong.nome}</h3>
+                            <p>${ong.biografia}</p>
+                            <button onclick="verPerfil('${ong.nome}')">Ver Perfil</button>
+                        </div>
+                    `;
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+
+                    marker.addListener('click', () => {
+                        infoWindow.open(map, marker);
+                    });
+                });
+            }).fail(function() {
+                alert("Não foi possível carregar as ONGs.");
             });
-        });
-    }
-</script>
-<div class="info-cards">
-    <div class="info-card">
-        <div class="card-icon"><i class="fa-solid fa-question"></i></div>
-        <h3>Como Utilizar</h3>
-        <p class="card-content">Aprenda a navegar pelo mapa, localizar informações e utilizar as funções de busca de forma intuitiva e eficaz.</p>
-        <div class="card-content-hover">Este mapa é fácil de usar! Para começar, escolha sua região de interesse para encontrar locais específicos. Explore as ferramentas de zoom e filtro para ajustar a visualização conforme sua necessidade.</div>
-    </div>
-    <div class="info-card">
-        <div class="card-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
-        <h3>Funcionalidades</h3>
-        <p class="card-content">Conheça as principais funcionalidades do sistema, como filtros personalizados e visualizações avançadas.</p>
-        <div class="card-content-hover">Aproveite filtros para ajustar resultados de acordo com sua localização e preferências. Com visualizações personalizáveis e atualizações em tempo real, você encontra o que precisa de forma rápida e precisa.</div>
-    </div>
-    <div class="info-card">
-        <div class="card-icon"><i class="fa-solid fa-star"></i></div>
-        <h3>Dicas Úteis</h3>
-        <p class="card-content">Receba dicas de uso para aproveitar ao máximo o sistema de localização e otimizar sua experiência.</p>
-        <div class="card-content-hover">Dica Pro: use o modo de visualização em tela cheia para uma experiência mais imersiva! Se precisar de ajuda, consulte nossa seção de FAQ ou entre em contato com o suporte.</div>
-    </div>
-</div>
-</div>
+        }
+
+        function verPerfil(nome) {
+            alert(`Abrindo perfil de ${nome}...`);
+            // Redirecionamento ou outra ação pode ser implementada aqui
+        }
+    </script>
+
+</div><!--wrapper-->
 </body>
 </html>

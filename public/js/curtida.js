@@ -1,26 +1,50 @@
+document.addEventListener("DOMContentLoaded", function () {
+    function likeButton(event) {
+        const heartImage = event.target;
+        const postId = heartImage.getAttribute('data-post-id');
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const likesCountElement = heartImage.closest('.card-postagem').querySelector('.likes');
 
-    // Variável para controlar o estado da curtida
-    let liked = false;
-
-    // Função para gerenciar a ação de curtir
-    function likeButton() {
-        const heartImage = event.target; // Obtém o elemento da imagem que foi clicado
-        const likesCountElement = heartImage.closest('.card-postagem').querySelector('.likes'); // Seleciona o elemento que exibe a contagem de curtidas
-        let currentLikes = parseInt(likesCountElement.textContent); // Obtém a contagem atual de curtidas
-
-        if (!liked) {
-            liked = true; // Marca como curtido
-            heartImage.src = "/img/coracao-vermelho.png"; // Altera a imagem para a versão cheia do coração
-            currentLikes++; // Incrementa a contagem de curtidas
-        } else {
-            liked = false; // Marca como não curtido
-            heartImage.src = "/img/coracao.png"; // Altera a imagem para a versão vazia do coração
-            if (currentLikes > 0) { // Verifica se a contagem de curtidas é maior que zero
-                currentLikes--; // Decrementa a contagem de curtidas se for positivo
+        fetch(`/curtir-postagem/${postId}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Content-Type': 'application/json'
             }
-        }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'Já curtiu') {
+                console.log("Usuário já curtiu esta postagem.");
+                return;
+            }
 
-        likesCountElement.textContent = `${currentLikes} curtidas`; // Atualiza a contagem de curtidas
+            // Atualiza o coração para vermelho e exibe a nova contagem de curtidas
+            heartImage.src = "/img/coracao-vermelho.png"; // O coração permanece vermelho
+            likesCountElement.textContent = `${data.curtidas} curtidas`;
+        })
+        .catch(error => console.error('Erro ao curtir postagem:', error));
     }
 
-
+    // Vincula o evento de clique a cada elemento com a classe 'heart'
+    document.querySelectorAll('.heart').forEach(heartImage => {
+        heartImage.addEventListener('click', likeButton);
+        
+        // Verifique se o usuário já curtiu a postagem e mantenha o coração vermelho
+        const postId = heartImage.getAttribute('data-post-id');
+        
+        fetch(`/verificar-curtida/${postId}`, {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.jaCurtiu) {
+                heartImage.src = "/img/coracao-vermelho.png"; // Mantém o coração vermelho
+            }
+        });
+    });
+});

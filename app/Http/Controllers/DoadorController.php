@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Doador;
 use App\Models\Ong;
 use App\Models\Campanha;
+use App\Models\Comentario;
 use App\Models\Postagem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -87,33 +88,34 @@ class DoadorController extends Controller
 }
 
 
-    public function adicionarComentario(Request $request)
-    {
-        $request->validate([
-            'idPostagem' => 'required|exists:postagem,idPostagem',
-            'conteudo' => 'required|string|max:255',
-        ]);
-    
-        $comentario = new Comentario();
-        $comentario->idPostagem = $request->idPostagem;
-        $comentario->idDoador = auth()->id(); // Obtém o ID do doador logado
-        $comentario->conteudo = $request->conteudo;
-        $comentario->save();
-    
-        // Obtém informações do doador
-        $doador = Doador::find(auth()->id());
-        
-        return response()->json([
-            'success' => true,
-            'comentario' => [
-                'fotoDoador' => $doador->fotoDoador,
-                'nomeDoador' => $doador->nomeDoador,
-                'conteudo' => $comentario->conteudo,
-            ]
-        ]);
-    }
+public function adicionarComentario(Request $request)
+{
+    $request->validate([
+        'idPostagem' => 'required|exists:postagem,idPostagem',
+        'conteudo' => 'required|string|max:255',
+    ]);
 
-    public function obterComentarios($idPostagem)
+    $comentario = new Comentario();
+    $comentario->idPostagem = $request->idPostagem;
+    $comentario->idDoador = auth()->id(); // Obtém o ID do doador logado
+    $comentario->conteudo = $request->conteudo;
+    $comentario->save();
+
+    // Obtém informações do doador
+    $doador = Doador::find(auth()->id());
+    
+    return response()->json([
+        'success' => true,
+        'comentarios' => [
+            'fotoDoador' => asset('storage/' . $doador->fotoDoador),
+            'nomeDoador' => $doador->nomeDoador,
+            'conteudo' => $comentario->conteudo,
+        ]
+    ]);
+}
+
+
+public function obterComentarios($idPostagem)
 {
     $comentarios = Comentario::with('doador')->where('idPostagem', $idPostagem)->get();
 
@@ -127,7 +129,6 @@ class DoadorController extends Controller
         }),
     ]);
 }
-
 
     public function index() {
         $search = request('search');

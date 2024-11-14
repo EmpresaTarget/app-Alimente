@@ -32,6 +32,29 @@ class FeedOngController extends Controller
     }
 }
 
+public function dashboard()
+{
+    if (Auth::check() && Auth::user()->idOng) {
+        $ongId = Auth::user()->idOng;
+
+        // Recupera a ONG associada ao usuário autenticado
+        $ong = Ong::find($ongId);
+
+        // Busca campanhas associadas a essa ONG
+        $campanhas = Campanha::where('idOng', $ongId)->get();
+        $postagens = Postagem::where('idOng', $ongId)->get();
+
+        $campanhasCount = Campanha::where('idOng', $ongId)->count();
+        $postagensCount = Postagem::where('idOng', $ongId)->count();
+        $totalCurtidas = $postagens->sum('numeroCurtidas');
+        $totalArrecadado = $ong->totalArrecadado;
+
+        return view('dashOng', compact('campanhas', 'postagensCount', 'campanhasCount', 'ong', 'totalCurtidas', 'totalArrecadado'));
+    } else {
+        return redirect()->route('logindoador')->withErrors('Você precisa estar logado para ver suas postagens.');
+    }
+}
+
     public function update(Request $request, $id)
     {
         // Validação dos dados

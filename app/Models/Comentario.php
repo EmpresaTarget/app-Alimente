@@ -11,7 +11,7 @@ class Comentario extends Model
 {
     use HasFactory;
 
-    protected $table = 'comentario';
+    protected $table = 'comentarios';
 
     // Defina os campos que podem ser preenchidos em massa
     protected $fillable = [

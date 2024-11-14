@@ -115,6 +115,9 @@ Route::get('/admin', function() {
 
 Route::post('/atualizar-arrecadacao', [OngController::class, 'atualizarArrecadacao']);
 
+Route::post('/comentarios', [DoadorController::class, 'adicionarComentario']);
+Route::get('/comentarios/{idPostagem}', [DoadorController::class, 'obterComentarios']);
+
 Route::post('/doador/perfil/atualizar', [DoadorController::class, 'atualizarPerfil'])->name('doador.atualizarPerfil')->middleware('auth');
 Route::post('/atualizar-foto', [DoadorController::class, 'atualizarFoto'])->name('atualizar.foto')->middleware('auth');
 
@@ -136,6 +139,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/feedOng/{id}', [FeedOngController::class, 'show'])->name('feedOng.show');
     Route::delete('/feedOng/{id}', [FeedOngController::class, 'destroy'])->name('feedOng.destroy');
 });
+
+Route::get('/dashOng', [FeedOngController::class, 'dashboard']);
 
 Route::get('/perfilOng', [OngController::class, 'perfil'])->middleware('auth');
 

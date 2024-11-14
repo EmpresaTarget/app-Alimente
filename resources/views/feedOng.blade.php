@@ -81,9 +81,14 @@ function showLogoutModal() {
         
             <div class="sidebar">
                 <ul>
-                    <li><a href="/feedOng">
+                    <li><a href="/dashOng">
                         <span class="icon"><i class="fa-solid fa-house"></i></span>
                         <span class="title">Início</span>
+                    </a></li>
+
+                    <li><a href="/feedOng">
+                        <span class="icon"><i class="fa-solid fa-camera-retro"></i></span>
+                        <span class="title">Seus Conteúdos</span>
                     </a></li>
 
                     <li><a href="/perfilOng">
@@ -98,78 +103,9 @@ function showLogoutModal() {
                 </ul>
             </div>
 
-            <div class="row-ola">
-                <h3>Olá, {{$ong->nomeOng}} &#128075;</h3>
-                <p>Bom te ver por aqui!</p>
-            </div>
             
             <div class="main_container">
 
-            <div class="cards-dash">
-                <div class="card-dash">
-                    <div class="card-content">
-                        <div class="number">{{$postagensCount}}</div>
-                        <div class="card-name">Postagens</div>
-                    </div>
-                    <div class="icon-box">
-                    <i class="fa-solid fa-camera"></i>
-                    </div>
-                </div>
-
-                <div class="card-dash">
-                    <div class="card-content">
-                        <div class="number">{{$campanhasCount}}</div>
-                        <div class="card-name">Campanhas</div>
-                    </div>
-                    <div class="icon-box">
-                    <i class="fa-solid fa-box"></i>
-                    </div>
-                </div>
-                
-                <div class="card-dash">
-                    <div class="card-content">
-                        <div class="number">12</div>
-                        <div class="card-name">Bons feedbacks</div>
-                    </div>
-                    <div class="icon-box">
-                    <i class="fa-solid fa-face-smile"></i>
-                    </div>
-                </div>
-
-                <div class="card-dash">
-                    <div class="card-content">
-                        <div class="number">R$ 20,00</div>
-                        <div class="card-name">Arrecadados</div>
-                    </div>
-                    <div class="icon-box">
-                    <i class="fa-solid fa-dollar-sign"></i>
-                    </div>
-                </div>
-
-                <div class="card-dash">
-                    <div class="card-content">
-                        <div class="number">80%</div>
-                        <div class="card-name">Contas prestadas</div>
-                    </div>
-                    <div class="icon-box">
-                    <i class="fa-solid fa-file-invoice-dollar"></i>
-                    </div>
-                </div>
-
-            </div><!--cards-dash-->
-
-            <div class="charts">
-
-                <div class="chart">
-                    <h2>Doações Diretas</h2>
-                    <canvas id="lineChart" height="110"></canvas>
-                </div><!--chart1-->
-
-                <div class="chart" id="doughnut-chart">
-                    <canvas id="doughnut"></canvas>
-                </div><!--chart2-->
-
-            </div>
 
             <div class="header-campanhas">
                 <h3>Suas Campanhas</h3>
@@ -381,9 +317,6 @@ function showLogoutModal() {
 <script src="/js/postOng.js"></script>
 <script src="/js/novaCampanha.js"></script>
 <script src="/js/notificacao.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
-<script src="/js/chart1.js"></script>
-<script src="/js/chart2.js"></script>
 
 <!--excluir campanha-->
 <script>

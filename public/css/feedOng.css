@@ -16,6 +16,7 @@ body {
 
 .wrapper {
     padding: 10px;
+    height: 100vh;
 }
 
 .wrapper .top_navbar {
@@ -255,6 +256,17 @@ body {
     overflow: hidden;
     background: #ffffff;
     align-items: center;
+}
+
+.wrapper .main_container-dash{
+    width: calc(100% - 200px);
+    margin-left: 200px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    background: #ffffff;
+    align-items: center;
+    height: 77.5vh;
 }
 
 .row-ola{

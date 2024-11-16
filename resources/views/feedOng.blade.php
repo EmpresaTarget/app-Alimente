@@ -144,6 +144,17 @@ function showLogoutModal() {
                 </div><!--post-convite-->
             </div>
 
+            <div class="publis">
+                <div class="card-publi">
+                    <img src="/img/agua.jpg" alt="">
+                    <div class="intro">
+                        <h1>20-11-2024</h1>
+                        <button class="button-editar"><i class="fa-regular fa-pen-to-square"></i>Editar Causa</button>
+                        <button class="button-excluir"><i class="fa-solid fa-circle-xmark"></i>Excluir</button>
+                    </div>
+                </div>
+            </div>
+
 <!--modais-->
 <div id="notification" class="notification hidden">
   <div class="notification-content">
@@ -313,7 +324,8 @@ function showLogoutModal() {
     </div>
   </div>
 </div>
-
+    </div>
+    </div>
 <script src="/js/postOng.js"></script>
 <script src="/js/novaCampanha.js"></script>
 <script src="/js/notificacao.js"></script>

@@ -236,7 +236,6 @@ if (userElement) {
     </div>
 </div>
 
-
 <!-- Modal de Confirmação de Logout -->
 <div id="logoutModal" class="modal-logout" style="display: none;">
     <div class="modal-content-logout">
@@ -331,6 +330,7 @@ if (userElement) {
     <script src="/js/busca.js"></script>
     <script src="/js/pix.js"></script>
     <script src="/js/arrecadacao.js"></script>
+    <script src="/js/doacao.js"></script>
 
     <script>
     const baseUrl = "{{ asset('storage/uploads') }}";

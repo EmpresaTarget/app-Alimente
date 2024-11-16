@@ -124,7 +124,7 @@ function showLogoutModal() {
                 <div class="card-dash">
                     <div class="card-content">
                         <div class="number">{{$campanhasCount}}</div>
-                        <div class="card-name">Campanhas em andamento</div>
+                        <div class="card-name">Campanhas</div>
                     </div>
                     <div class="icon-box">
                     <i class="fa-solid fa-box"></i>
@@ -170,7 +170,8 @@ function showLogoutModal() {
                     <canvas id="lineChart" height="110"></canvas>
                 </div><!--chart1-->
 
-                <div class="chart" id="doughnut-chart">
+                <div class="chart2" id="doughnut-chart">
+                    <h3>Andamento das Campanhas</h3>
                     <canvas id="doughnut"></canvas>
                 </div><!--chart2-->
 
@@ -191,8 +192,79 @@ function showLogoutModal() {
 
 </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
-    <script src="/js/chart1.js"></script>
-    <script src="/js/chart2.js"></script>
+
+    <script>
+        // Obtendo os dados de doações por mês que foram passados do PHP para o JavaScript
+var doacoesPorMes = @json($doacoesPorMes);
+var doacoesData = Array(12).fill(0); // Inicializando um array com 0 para 12 meses
+
+// Preenchendo os dados de doações por mês
+doacoesPorMes.forEach(function(doacao) {
+    doacoesData[doacao.mes - 1] = doacao.total_doacoes;
+});
+
+// Configurando o gráfico com os dados dinâmicos
+const ctx = document.getElementById('lineChart').getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        datasets: [{
+            label: 'Contagem de Doações por Mês',
+            data: doacoesData,
+            backgroundColor: 'rgba(45, 91, 151, 2)',
+            borderColor: 'rgba(45, 91, 151, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+    </script>
+
+    <script>
+           const ctx2 = document.getElementById('doughnut').getContext('2d');
+
+new Chart(ctx2, {
+    type: 'doughnut',
+    data: {
+        labels: ['Em Andamento', 'Finalizadas'],
+        datasets: [{
+            label: '# of Votes',
+            data: [{{ $campanhasEmAndamentoCount }}, {{ $campanhasFinalizadasCount }}],  // Injetando os dados do PHP
+            borderWidth: 1,
+            backgroundColor: [
+                'rgb(39, 122, 185)',
+                'rgb(32,178,170)',
+            ],
+            borderColor: [
+                'rgb(240, 240, 240)',
+                'rgb(240, 240, 240)',
+            ]
+        }]
+    },
+    options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '50%', // Já define a área interna do gráfico
+    layout: {
+        padding: {
+            top: 10, // Reduz espaçamento superior
+            bottom: 10 // Reduz espaçamento inferior
+        }
+    },
+    plugins: {
+        legend: {
+            position: 'top',
+        },
+    }
+}
+
+});
+    </script>
+
     <script src="/js/notificacao.js"></script>
     </body>
     </html>

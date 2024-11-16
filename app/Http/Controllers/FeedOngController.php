@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ong;
 use App\Models\Campanha;
 use App\Models\Postagem;
+use App\Models\Doacao;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -45,11 +46,40 @@ public function dashboard()
         $postagens = Postagem::where('idOng', $ongId)->get();
 
         $campanhasCount = Campanha::where('idOng', $ongId)->count();
+
+         // Contagem das campanhas em andamento e finalizadas
+         $campanhasEmAndamento = $campanhas->filter(function ($campanha) {
+            $dataAtual = now();  // Data atual
+            return $dataAtual->between($campanha->dataInicioCampanha, $campanha->dataFimCampanha);
+        });
+
+        $campanhasFinalizadas = $campanhas->filter(function ($campanha) {
+            $dataAtual = now();  // Data atual
+            return $dataAtual->greaterThan($campanha->dataFimCampanha);
+        });
+
+        $campanhasCount = $campanhas->count();
+        $campanhasEmAndamentoCount = $campanhasEmAndamento->count();
+        $campanhasFinalizadasCount = $campanhasFinalizadas->count();
+
         $postagensCount = Postagem::where('idOng', $ongId)->count();
         $totalCurtidas = $postagens->sum('numeroCurtidas');
-        $totalArrecadado = $ong->totalArrecadado;
+        $totalArrecadado = Doacao::where('ongId', $ongId)->sum('valor');
+        $doacoesPorMes = Doacao::where('ongId', $ongId)
+        ->selectRaw('mes, count(idDoacao) as total_doacoes')
+        ->groupBy('mes')
+        ->orderBy('mes')
+        ->get();
 
-        return view('dashOng', compact('campanhas', 'postagensCount', 'campanhasCount', 'ong', 'totalCurtidas', 'totalArrecadado'));
+    // Formatar os dados para o JavaScript
+    $doacoesPorMes = $doacoesPorMes->map(function ($doacao) {
+        return [
+            'mes' => $doacao->mes,
+            'total_doacoes' => $doacao->total_doacoes
+        ];
+    });
+
+        return view('dashOng', compact('campanhas', 'postagensCount', 'campanhasCount', 'ong', 'totalCurtidas', 'totalArrecadado', 'doacoesPorMes', 'campanhasEmAndamentoCount', 'campanhasFinalizadasCount'));
     } else {
         return redirect()->route('logindoador')->withErrors('Você precisa estar logado para ver suas postagens.');
     }

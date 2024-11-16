@@ -256,6 +256,7 @@ body {
     overflow: hidden;
     background: #ffffff;
     align-items: center;
+    height: auto;
 }
 
 .wrapper .main_container-dash{
@@ -336,13 +337,22 @@ body {
     width: 100%; 
     height: 310px;
     margin-top: 20px;
-    margin-bottom: 40px;
 }
 
-#doughnut {
-    width: 100%;  /* ou um valor fixo como 300px */
-    height: 20px; /* ajuste a altura desejada */
-  }
+.chart2{
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+    width: 100%; 
+    height: 310px;
+    margin-top: 20px;
+}
+
+.chart2 canvas {
+    max-height: 100%; /* Garante que o canvas respeite o tamanho do container */
+    width: 100%; /* Para manter a largura ajustada */
+}
 
 .header-campanhas {
     display: flex;
@@ -573,11 +583,10 @@ body {
    color: white;
    font-weight: 500;
    border: none;
-  
    cursor: pointer;
    transition: 0.3s ease;
    border-radius: 5px;
-   margin-top: 20px;
+   margin-top: 10px;
 }
 
 .post-convite button:hover{
@@ -587,6 +596,64 @@ body {
 
 .post-convite button i {
     margin-right: 5px; /* Espaçamento entre o ícone e o texto */
+}
+
+/*publis*/
+.publis{
+    width: calc(100% - 210px);
+    max-height: auto;
+    border: 1px solid #ddd;
+    display: flex;
+    overflow-x: auto;
+    padding: 0;
+    white-space: nowrap;
+    margin-left: 210px;
+    border-radius: 5px;
+}
+
+.publis::-webkit-scrollbar{
+    width: 5;
+}
+
+.publis .card-publi img{
+   height: 300px;
+   width: 350px;
+   object-fit: cover;
+   object-position: center;
+}
+
+.card-publi{
+    height: 300px;
+    margin-right: 5px;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.intro{
+    height: 100px;
+    width: 350px;
+    padding: 6px;
+    box-sizing: border-box;
+    position: absolute;
+    background: rgba(27, 27, 27, 0.5);
+    color: #ffffff;
+    top: 10%; /* Posiciona a borda superior no meio do card */
+    left: 50%;
+    transform: translate(-0%, -50%);
+}
+
+.intro h1{
+    margin: 10px;
+    font-size: 30px;
+}
+
+.intro button{
+    margin: 10px;
+}
+
+.card-publi:hover{
+    cursor: pointer;
+
 }
 
 /*modais*/
@@ -744,8 +811,6 @@ body {
 
 .modal-buttons button {
     padding: 10px 20px;
-   
-  
     cursor: pointer;
     font-size: 16px;
     border-radius: 5px;

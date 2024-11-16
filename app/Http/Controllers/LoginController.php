@@ -44,7 +44,7 @@ class LoginController extends Controller
         $ong = Ong::where('emailOng', $credentials['email'])->first();
         if ($ong && $ong->senhaOng === $credentials['password']) {
             Auth::login($ong); // Login da ONG
-            return redirect()->route('feedOng.index', ['idOng' => $ong->id]); // Redireciona com o ID da ONG
+            return redirect()->route('dashOng', ['idOng' => $ong->id]); // Redireciona com o ID da ONG
         }
 
         // Retorna com erro se as credenciais forem inválidas

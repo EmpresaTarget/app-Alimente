@@ -81,9 +81,14 @@ function showLogoutModal() {
         
             <div class="sidebar">
                 <ul>
-                    <li><a href="/feedOng">
+                    <li><a href="/dashOng">
                         <span class="icon"><i class="fa-solid fa-house"></i></span>
                         <span class="title">Início</span>
+                    </a></li>
+
+                    <li><a href="/feedOng">
+                        <span class="icon"><i class="fa-solid fa-camera-retro"></i></span>
+                        <span class="title">Seus Conteúdos</span>
                     </a></li>
 
                     <li><a href="/perfilOng">
@@ -98,78 +103,9 @@ function showLogoutModal() {
                 </ul>
             </div>
 
-            <div class="row-ola">
-                <h3>Olá, {{$ong->nomeOng}} &#128075;</h3>
-                <p>Bom te ver por aqui!</p>
-            </div>
             
             <div class="main_container">
 
-            <div class="cards-dash">
-                <div class="card-dash">
-                    <div class="card-content">
-                        <div class="number">{{$postagensCount}}</div>
-                        <div class="card-name">Postagens</div>
-                    </div>
-                    <div class="icon-box">
-                    <i class="fa-solid fa-camera"></i>
-                    </div>
-                </div>
-
-                <div class="card-dash">
-                    <div class="card-content">
-                        <div class="number">{{$campanhasCount}}</div>
-                        <div class="card-name">Campanhas</div>
-                    </div>
-                    <div class="icon-box">
-                    <i class="fa-solid fa-box"></i>
-                    </div>
-                </div>
-                
-                <div class="card-dash">
-                    <div class="card-content">
-                        <div class="number">12</div>
-                        <div class="card-name">Bons feedbacks</div>
-                    </div>
-                    <div class="icon-box">
-                    <i class="fa-solid fa-face-smile"></i>
-                    </div>
-                </div>
-
-                <div class="card-dash">
-                    <div class="card-content">
-                        <div class="number">R$ 20,00</div>
-                        <div class="card-name">Arrecadados</div>
-                    </div>
-                    <div class="icon-box">
-                    <i class="fa-solid fa-dollar-sign"></i>
-                    </div>
-                </div>
-
-                <div class="card-dash">
-                    <div class="card-content">
-                        <div class="number">80%</div>
-                        <div class="card-name">Contas prestadas</div>
-                    </div>
-                    <div class="icon-box">
-                    <i class="fa-solid fa-file-invoice-dollar"></i>
-                    </div>
-                </div>
-
-            </div><!--cards-dash-->
-
-            <div class="charts">
-
-                <div class="chart">
-                    <h2>Doações Diretas</h2>
-                    <canvas id="lineChart" height="110"></canvas>
-                </div><!--chart1-->
-
-                <div class="chart" id="doughnut-chart">
-                    <canvas id="doughnut"></canvas>
-                </div><!--chart2-->
-
-            </div>
 
             <div class="header-campanhas">
                 <h3>Suas Campanhas</h3>
@@ -208,6 +144,28 @@ function showLogoutModal() {
                 </div><!--post-convite-->
             </div>
 
+            <div class="publis">
+            @foreach ($postagens as $postagem)
+                <div class="card-publi">
+                    <img src="{{ asset('storage/' . $postagem->imagem) }}" alt="">
+                    <div class="intro">
+                        <h1>{{ $postagem->dataPostagem->format('d/m/Y') }}</h1>
+                        <div class="row">
+                        <button class="button-editar" 
+                        class="button-editar" 
+                        data-id="{{ $postagem->idPostagem }}" 
+                        data-description="{{ $postagem->conteudo }}" 
+                        data-image="{{ asset('storage/' . $postagem->imagem) }}" 
+                        data-hashtags="{{ $postagem->hashtags }}"
+                        data-chave_pix="{{ $postagem->chavePix }}">
+                        <i class="fa-regular fa-pen-to-square"></i>Editar Causa</button>
+                        <button class="button-excluir" data-postagem-id="{{ $postagem->idPostagem }}"><i class="fa-solid fa-circle-xmark"></i>Excluir</button>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
 <!--modais-->
 <div id="notification" class="notification hidden">
   <div class="notification-content">
@@ -216,6 +174,17 @@ function showLogoutModal() {
     <p class="notification-text">Opa, você não realizou sua prestação de contas ainda!</p>
     <button class="notification-close" onclick="hideNotification()">Fechar</button>
     <button class="notification-open"><a href="/prestarContaOng">Bora</a></button>
+  </div>
+</div>
+
+<div id="modal-excluir" class="modal-delete">
+  <div class="modal-content-delete">
+    <h2>Tem certeza que deseja excluir esta postagem?</h2>
+    <p>Esta ação não pode ser desfeita.</p>
+    <div class="modal-buttons-delete">
+    <button id="btn-nao" class="btn-cancelar">Cancelar</button>
+      <button id="btn-sim" class="btn-confirmar">Excluir</button>
+    </div>
   </div>
 </div>
 
@@ -263,6 +232,9 @@ function showLogoutModal() {
                 <label for="end-date">Data de Fim:</label>
                 <input type="date" id="end-date" name="dataFimCampanha" required>
 
+                <label for="pix-key">Chave PIX:</label>
+                <input type="text" id="pix-key" name="chavePix" placeholder="Informe uma chave PIX">
+
                 <div class="modal-buttons">
                     <button type="button" id="cancelBtn" class="cancel">Cancelar</button>
                     <button type="submit" class="submit">Salvar</button>
@@ -305,6 +277,9 @@ function showLogoutModal() {
                 <label for="edit-end-date">Data de Fim:</label>
                 <input type="date" id="edit-end-date" name="dataFimCampanha" required>
 
+                <label for="edit-pix-key">Chave PIX:</label>
+                <input type="text" id="edit-pix-key" name="chavePix" placeholder="Informe uma nova chave PIX">
+
                 <div class="modal-buttons">
                     <button type="button" id="editCancelBtn" class="cancel">Cancelar</button>
                     <button type="submit" class="submit">Salvar</button>
@@ -318,7 +293,7 @@ function showLogoutModal() {
 <div id="deleteModal" class="modal-delete">
     <div class="modal-content-delete">
         <h2>Tem certeza que deseja excluir esta campanha?</h2>
-        <p id="delete-campaign-name">Nome da Campanha:</p>
+        <p>Esta ação não pode ser desfeita.</p>
         <form id="deleteCampanhaForm" method="POST" action="">
             @csrf
             @method('DELETE')
@@ -332,9 +307,14 @@ function showLogoutModal() {
     </div>
 </div>
 
-<div class="success-message"></div> <!-- Mensagem de sucesso -->
+<!-- Modal de Sucesso -->
+<div id="successModal" style="display: none;">
+    <div class="modal-content-sucess">
+        <h3>Campanha Atualizada com Sucesso!</h3>
+        </div>
+</div>
 
-    <!-- Modal post-->
+<!-- Modal post-->
 <div id="postModal" class="post-modal">
   <div class="post-modal-content">
     <span class="post-close">&times;</span>
@@ -358,9 +338,13 @@ function showLogoutModal() {
       <!-- Lado direito - Descrição e hashtags -->
       <div class="post-right-section">
         <label for="postDescription">Descrição</label>
-        <textarea id="postDescription" rows="5" placeholder="Adicione uma descrição..."></textarea>
+        <textarea id="postDescription" rows="5" placeholder="Adicione uma descrição..." style="margin-bottom: 8px;"></textarea>
+
+        <label for="chavePix">Chave Pix:</label>
+        <input class="post-input" type="text" id="chavePix" placeholder="Informe uma chave PIX" />
 
         <!-- Botões de Hashtags -->
+        <div id="hashtagsContainer" style="display: none;"></div>
         <div class="post-hashtags">
         <button class="hashtag-btn" data-hashtag="#doenças">#doenças</button>
           <button class="hashtag-btn" data-hashtag="#alimentação">#alimentação</button>
@@ -377,13 +361,11 @@ function showLogoutModal() {
     </div>
   </div>
 </div>
-
+    </div>
+    </div>
 <script src="/js/postOng.js"></script>
 <script src="/js/novaCampanha.js"></script>
 <script src="/js/notificacao.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
-<script src="/js/chart1.js"></script>
-<script src="/js/chart2.js"></script>
 
 <!--excluir campanha-->
 <script>
@@ -449,6 +431,7 @@ $(document).ready(function() {
             $('#edit-campaign-description').val(data.descricaoCampanha);
             $('#edit-start-date').val(data.dataInicioCampanha);
             $('#edit-end-date').val(data.dataFimCampanha);
+            $('#edit-pix-key').val(data.chavePix); 
             $('#editModal').css('display', 'flex');
         });
     });
@@ -462,7 +445,7 @@ $(document).ready(function() {
             };
             reader.readAsDataURL(file);
         } else {
-            $('#edit-image-preview').empty(); // Limpa a pré-visualização se nenhum arquivo for selecionado
+            $('#edit-image-preview').empty();
         }
     });
 
@@ -479,25 +462,27 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             headers: {
-                'X-HTTP-Method-Override': 'PUT', // Método PUT simulado
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                'X-HTTP-Method-Override': 'PUT',
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response) {
-                alert('Campanha atualizada com sucesso!');
+                // Exibe o modal de sucesso
+                $('#successModal').css('display', 'flex');
 
-                // Atualizar a imagem no modal e fora dele com cache-busting
+                // Fechar o modal automaticamente após 3 segundos
+                setTimeout(function() {
+                    $('#successModal').css('display', 'none');
+                }, 900);
+
+                // Atualizar imagem com cache-busting
                 if (response.imagemCampanha) {
-                    const timestamp = new Date().getTime(); // Gera um timestamp
+                    const timestamp = new Date().getTime();
                     const newImageSrc = `/storage/${response.imagemCampanha}?t=${timestamp}`;
-
-                    // Atualizar pré-visualização no modal
                     $('#edit-image-preview').html(`<img src="${newImageSrc}" alt="Pré-visualização da imagem" style="max-width: 100%; max-height: 300px;">`);
-
-                    // Atualizar a imagem principal fora do modal
                     $(`#campaign-image-${id}`).attr('src', newImageSrc);
                 }
 
-                // Fechar o modal após a atualização
+                // Fechar modal de edição
                 $('#editModal').hide();
             },
             error: function(response) {
@@ -508,7 +493,7 @@ $(document).ready(function() {
 
     // Fechar o modal ao clicar no botão de cancelar
     $('#editCancelBtn').click(function() {
-        $('#editModal').css('display', 'none'); // Ocultar o modal
+        $('#editModal').css('display', 'none');
     });
 
     // Fechar o modal ao clicar fora do conteúdo
@@ -516,6 +501,11 @@ $(document).ready(function() {
         if ($(event.target).is('#editModal')) {
             $('#editModal').css('display', 'none');
         }
+    });
+
+    // Fechar o modal de sucesso manualmente
+    $('#closeSuccessModal').click(function() {
+        $('#successModal').css('display', 'none');
     });
 });
 </script>

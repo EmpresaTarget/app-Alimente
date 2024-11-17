@@ -4,11 +4,35 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Ong; 
 use App\Models\Postagem;
+use App\Models\Doacao;
 use App\Models\PrestacaoConta;
 use Illuminate\Http\Request;
 
 class OngController extends Controller
 {
+
+    public function registrarDoacao(Request $request)
+    {
+        $ongId = $request->input('ongId');
+        $valor = $request->input('valor');
+        $mes = $request->input('mes');
+        $ano = $request->input('ano');
+
+        try {
+            // Salvar doação no banco de dados
+            $doacao = new Doacao();
+            $doacao->ongId = $ongId;
+            $doacao->valor = $valor;
+            $doacao->mes = $mes;
+            $doacao->ano = $ano;
+            $doacao->save();
+
+            return response()->json(['success' => true, 'message' => 'Doação registrada com sucesso!']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
     public function atualizarArrecadacao(Request $request)
     {
         // Encontrar a ONG pela ID

@@ -106,7 +106,6 @@ Route::get('/admin', [adminController::class, 'index'])->name('admin.index');
 Route::post('/admin', [adminController::class, 'store'])->name('admin.store');
 Route::post('/admin/authorize/{id}', [adminController::class, 'authorizeOng'])->name('admin.ongs.authorize');
 
-
 Route::get('/admin', function() {
     return view('admin');
 });
@@ -114,6 +113,13 @@ Route::get('/admin', function() {
 /*feed doador*/ 
 
 Route::post('/atualizar-arrecadacao', [OngController::class, 'atualizarArrecadacao']);
+Route::post('/registrar-doacao', [OngController::class, 'registrarDoacao']);
+
+Route::put('/postagem/{id}', [PostagemController::class, 'update']);
+Route::delete('/postagens/{id}/excluir', [PostagemController::class, 'destroy']);
+
+Route::post('/comentarios', [DoadorController::class, 'adicionarComentario']);
+Route::get('/comentarios/{idPostagem}', [DoadorController::class, 'obterComentarios']);
 
 Route::post('/doador/perfil/atualizar', [DoadorController::class, 'atualizarPerfil'])->name('doador.atualizarPerfil')->middleware('auth');
 Route::post('/atualizar-foto', [DoadorController::class, 'atualizarFoto'])->name('atualizar.foto')->middleware('auth');
@@ -137,11 +143,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/feedOng/{id}', [FeedOngController::class, 'destroy'])->name('feedOng.destroy');
 });
 
+Route::get('/dashOng', [FeedOngController::class, 'dashboard'])->name('dashOng');
+
 Route::get('/perfilOng', [OngController::class, 'perfil'])->middleware('auth');
 
 Route::get('/prestarContaOng', [OngController::class, 'prestarConta'])->middleware('auth');
 Route::post('/prestar-conta', [PrestacaoContasController::class, 'store'])->middleware('auth')->name('prestar-conta.store');
-
 
 Route::get('/prestacaoContaAdm', [PrestacaoContasController::class, 'index'])->name('prestacaoContaAdm');
 // Rotas para campanhas
@@ -190,9 +197,3 @@ Route::get('dashboard', function () {
     return view('dashboard'); // Certifique-se de ter essa view criada
 })->middleware('auth');
 Auth::routes();*/
-
-//listar ongs para a autorização
-Route::middleware('auth:sanctum')->get('/ongs', [OngController::class, 'index']);
-Route::middleware('auth:sanctum')->get('/ongs/pendentes', [OngController::class, 'ongPendentes']);
-Route::middleware('auth:sanctum')->put('/ongs/aceitar/{idOng}', [OngController::class, 'aceitar']);
-Route::middleware('auth:sanctum')->put('/ongs/arquivar/{idOng}', [OngController::class, 'arquivar']);

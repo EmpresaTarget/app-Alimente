@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ong;
 use App\Models\Campanha;
 use App\Models\Postagem;
+use App\Models\Doacao;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,59 @@ class FeedOngController extends Controller
         $campanhasCount = Campanha::where('idOng', $ongId)->count();
         $postagensCount = Postagem::where('idOng', $ongId)->count();
 
-        return view('feedOng', compact('campanhas', 'postagensCount', 'campanhasCount', 'ong'));
+        return view('feedOng', compact('campanhas', 'postagens', 'postagensCount', 'campanhasCount', 'ong'));
+    } else {
+        return redirect()->route('logindoador')->withErrors('Você precisa estar logado para ver suas postagens.');
+    }
+}
+
+public function dashboard()
+{
+    if (Auth::check() && Auth::user()->idOng) {
+        $ongId = Auth::user()->idOng;
+
+        // Recupera a ONG associada ao usuário autenticado
+        $ong = Ong::find($ongId);
+
+        // Busca campanhas associadas a essa ONG
+        $campanhas = Campanha::where('idOng', $ongId)->get();
+        $postagens = Postagem::where('idOng', $ongId)->get();
+
+        $campanhasCount = Campanha::where('idOng', $ongId)->count();
+
+         // Contagem das campanhas em andamento e finalizadas
+         $campanhasEmAndamento = $campanhas->filter(function ($campanha) {
+            $dataAtual = now();  // Data atual
+            return $dataAtual->between($campanha->dataInicioCampanha, $campanha->dataFimCampanha);
+        });
+
+        $campanhasFinalizadas = $campanhas->filter(function ($campanha) {
+            $dataAtual = now();  // Data atual
+            return $dataAtual->greaterThan($campanha->dataFimCampanha);
+        });
+
+        $campanhasCount = $campanhas->count();
+        $campanhasEmAndamentoCount = $campanhasEmAndamento->count();
+        $campanhasFinalizadasCount = $campanhasFinalizadas->count();
+
+        $postagensCount = Postagem::where('idOng', $ongId)->count();
+        $totalCurtidas = $postagens->sum('numeroCurtidas');
+        $totalArrecadado = Doacao::where('ongId', $ongId)->sum('valor');
+        $doacoesPorMes = Doacao::where('ongId', $ongId)
+        ->selectRaw('mes, count(idDoacao) as total_doacoes')
+        ->groupBy('mes')
+        ->orderBy('mes')
+        ->get();
+
+    // Formatar os dados para o JavaScript
+    $doacoesPorMes = $doacoesPorMes->map(function ($doacao) {
+        return [
+            'mes' => $doacao->mes,
+            'total_doacoes' => $doacao->total_doacoes
+        ];
+    });
+
+        return view('dashOng', compact('campanhas', 'postagensCount', 'campanhasCount', 'ong', 'totalCurtidas', 'totalArrecadado', 'doacoesPorMes', 'campanhasEmAndamentoCount', 'campanhasFinalizadasCount'));
     } else {
         return redirect()->route('logindoador')->withErrors('Você precisa estar logado para ver suas postagens.');
     }
@@ -42,6 +95,7 @@ class FeedOngController extends Controller
             'imagemCampanha' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'dataInicioCampanha' => 'nullable|date',
             'dataFimCampanha' => 'nullable|date',
+            'chavePix' => 'nullable|string|max:255',
         ]);
     
         // Verifica se a campanha pertence à ONG autenticada
@@ -71,6 +125,7 @@ class FeedOngController extends Controller
             'assuntoCampanha' => $campanha->assuntoCampanha,
             'descricaoCampanha' => $campanha->descricaoCampanha,
             'imagemCampanha' => $campanha->imagemCampanha,
+            'chavePix' => $campanha->chavePix,
         ]);
     }
 

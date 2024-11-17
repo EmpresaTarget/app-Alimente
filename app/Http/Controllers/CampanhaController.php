@@ -27,6 +27,7 @@ class CampanhaController extends Controller
             'imagemCampanha' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'dataInicioCampanha' => 'nullable|date',
             'dataFimCampanha' => 'nullable|date',
+            'chavePix' => 'nullable|string|max:255',
         ]);
 
         $campanha = new Campanha($request->except('imagemCampanha'));
@@ -43,6 +44,7 @@ class CampanhaController extends Controller
             'assuntoCampanha' => $campanha->assuntoCampanha,
             'descricaoCampanha' => $campanha->descricaoCampanha,
             'imagemCampanha' => $campanha->imagemCampanha,
+            'chavePix' => $campanha->chavePix,
         ]);
     }
 
@@ -62,6 +64,7 @@ class CampanhaController extends Controller
             'imagemCampanha' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'dataInicioCampanha' => 'nullable|date',
             'dataFimCampanha' => 'nullable|date',
+            'chavePix' => 'nullable|string|max:255',
         ]);
     
         $campanha = Campanha::findOrFail($id);
@@ -86,6 +89,7 @@ class CampanhaController extends Controller
             'assuntoCampanha' => $campanha->assuntoCampanha,
             'descricaoCampanha' => $campanha->descricaoCampanha,
             'imagemCampanha' => $campanha->imagemCampanha,
+             'chavePix' => $campanha->chavePix,
         ]);
     }
     

@@ -27,6 +27,10 @@ class Ong extends Model implements AuthenticatableContract
         return $this->hasMany(Campanha::class, 'idOng');
     }
 
+    public function doacoes()
+{
+    return $this->hasMany(Doacao::class, 'ongId', 'idOng');
+}
 
     protected $fillable = [
         'nomeOng',

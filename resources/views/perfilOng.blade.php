@@ -95,9 +95,14 @@
         
             <div class="sidebar">
                 <ul>
-                    <li><a href="/feedOng">
+                <li><a href="/dashOng">
                         <span class="icon"><i class="fa-solid fa-house"></i></span>
                         <span class="title">Início</span>
+                    </a></li>
+
+                    <li><a href="/feedOng">
+                        <span class="icon"><i class="fa-solid fa-camera-retro"></i></span>
+                        <span class="title">Seus Conteúdos</span>
                     </a></li>
 
                     <li><a href="/perfilOng">

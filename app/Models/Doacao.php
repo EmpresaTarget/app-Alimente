@@ -9,26 +9,20 @@ class Doacao extends Model
 {
     use HasFactory;
 
-    protected $table = 'doacao'; // Nome da tabela
+    protected $table = 'doacoes';
 
-    protected $primaryKey = 'idDoacao'; // Chave primária
+    protected $primaryKey = 'idDoacao';
 
     protected $fillable = [
-        'idDoador',
-        'idOng',
-        'valorDoacao',
-        'data_doacao'
+        'ongId',
+        'valor',
+        'mes',
+        'ano',
     ];
 
-    // Relacionamento com Doador
-    public function doador()
-    {
-        return $this->belongsTo(Doador::class, 'idDoador');
-    }
-
-    // Relacionamento com Ong
+    // Relacionamento com a tabela ONG
     public function ong()
     {
-        return $this->belongsTo(Ong::class, 'idOng');
+        return $this->belongsTo(Ong::class, 'ongId', 'idOng');
     }
 }

@@ -25,7 +25,8 @@ class Postagem extends Model
         'hashtags',
         'dataPostagem',
         'numeroCurtidas',
-        'comentariosPostagem'
+        'comentariosPostagem',
+        'chavePix',
     ];
 
     protected $casts = [

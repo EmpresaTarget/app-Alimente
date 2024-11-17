@@ -17,7 +17,8 @@ class CreateCampanhaTable extends Migration
             $table->string('assuntoCampanha', 255)->nullable(); // Assunto opcional
             $table->date('dataInicioCampanha')->nullable(); // Data de início opcional
             $table->date('dataFimCampanha')->nullable(); // Data de fim opcional
-
+            $table->string('chavePix', 255)->nullable();
+            
             // Definindo a chave estrangeira
             $table->foreign('idOng')->references('idOng')->on('ong')->onDelete('cascade');
             $table->timestamps(); // Cria created_at e updated_at

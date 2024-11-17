@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +21,7 @@ class Campanha extends Model
         'assuntoCampanha',
         'dataInicioCampanha',
         'dataFimCampanha',
+        'chavePix',
     ];
 
     public function ong()

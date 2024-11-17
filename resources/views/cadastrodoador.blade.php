@@ -15,10 +15,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
     <style>
         * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
         }
         body {
             height: 100vh;
@@ -42,14 +42,9 @@
             border-top-left-radius: 15%;
             border-bottom-left-radius: 15%;
             margin-left: 20px;
-            /*transition: transform 0.4s ease-in-out; /* Transição suave */
         }
 
-       /* .right-section.move-left {
-            transform: translateX(-60%); /* Move a seção para fora da tela 
-        }*/
-
-         h3 {
+        h3 {
             text-align: center;
             font-weight: 600;
             font-size: 1.3em;
@@ -85,11 +80,11 @@
         }
 
         form label {
-        margin-bottom: 5px;
-        font-weight: 600;
+            margin-bottom: 5px;
+            font-weight: 600;
         }
 
-       form input, form select {
+        form input, form select {
             margin-bottom: 8px;
             padding: 10px;
             border-radius: 6px;
@@ -106,6 +101,25 @@
             max-width: 80%;
             object-fit: cover;
             object-position: center;
+        }
+
+        /* Estilos para o campo de senha e o ícone de olho */
+        .password-container {
+            position: relative;
+        }
+        .password-container input {
+            width: 100%;
+            padding-right: 30px; /* Deixa o espaço para o ícone de olho */
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #333;
         }
     </style>
 </head>
@@ -134,7 +148,7 @@
 
                 <div class="row">
                     <div class="col mb-3">
-                        <label class="form-label">email:</label>
+                        <label class="form-label">Email:</label>
                         <input type="email" class="form-control" name="emailDoador" id="emailDoador" placeholder="Insira um email" >
                     </div>
                 </div>
@@ -142,7 +156,16 @@
                 <div class="row">
                     <div class="col mb-3">
                         <label class="form-label">Senha:</label>
-                        <input type="password" class="form-control" name="senhaDoador" id="senhaDoador" placeholder="Crie uma senha" >
+                        <div class="password-container">
+                            <input type="password" class="form-control" name="senhaDoador" id="senhaDoador" placeholder="Crie uma senha">
+                            <span class="toggle-password" onclick="togglePasswordVisibility()">
+                                <!-- Ícone de Olho em SVG -->
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z" stroke="#333" stroke-width="2"/>
+                                    <circle cx="12" cy="12" r="3" fill="none" stroke="#333" stroke-width="2"/>
+                                </svg>
+                            </span>
+                        </div>
                     </div>
                 </div>
 
@@ -157,20 +180,11 @@
         <img src="/img/normal.png" alt="">
     </div>
 
-    <!-- JavaScript 
     <script>
-        const linkCadastrarOng = document.querySelector('#linkCadastrarOng');
-        const rightSection = document.querySelector('.right-section');
-
-        linkCadastrarOng.addEventListener('click', function(e) {
-            e.preventDefault();
-            rightSection.classList.add('move-left');
-
-            // Aguarde a animação antes de redirecionar
-            setTimeout(() => {
-                window.location.href = '/cadastroOng'; // Redireciona para a página desejada
-            }, 100); // Tempo igual ao da animação (500ms)
-        });
-    </script>-->
+        function togglePasswordVisibility() {
+            var passwordField = document.getElementById("senhaDoador");
+            passwordField.type = passwordField.type === "password" ? "text" : "password";
+        }
+    </script>
 </body>
 </html>

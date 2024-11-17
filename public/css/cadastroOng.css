@@ -121,6 +121,28 @@ form .button:hover {
     background-color: #357f94; /* Cor da "thumb" quando o mouse passa por cima */
 }
 
+/* Estilos para o campo de senha e o ícone de olho */
+.password-container {
+    position: relative;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 30px; /* Deixa o espaço para o ícone de olho */
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #333;
+}
+
+
 @media screen and (max-width: 768px) {
     body {
         flex-direction: column;

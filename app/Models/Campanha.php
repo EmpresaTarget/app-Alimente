@@ -21,6 +21,7 @@ class Campanha extends Model
         'assuntoCampanha',
         'dataInicioCampanha',
         'dataFimCampanha',
+        'chavePix',
     ];
 
     public function ong()

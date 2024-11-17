@@ -115,6 +115,9 @@ Route::get('/admin', function() {
 Route::post('/atualizar-arrecadacao', [OngController::class, 'atualizarArrecadacao']);
 Route::post('/registrar-doacao', [OngController::class, 'registrarDoacao']);
 
+Route::put('/postagem/{id}', [PostagemController::class, 'update']);
+Route::delete('/postagens/{id}/excluir', [PostagemController::class, 'destroy']);
+
 Route::post('/comentarios', [DoadorController::class, 'adicionarComentario']);
 Route::get('/comentarios/{idPostagem}', [DoadorController::class, 'obterComentarios']);
 

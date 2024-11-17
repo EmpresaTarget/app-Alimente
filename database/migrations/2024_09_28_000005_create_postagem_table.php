@@ -16,6 +16,7 @@ class CreatePostagemTable extends Migration
             $table->string('hashtags')->nullable(); // Hashtags usadas
             $table->timestamp('dataPostagem')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('numeroCurtidas')->default(0);
+            $table->string('chavePix')->nullable();
             $table->foreign('idOng')->references('idOng')->on('ong')->onDelete('cascade');
         });
     }

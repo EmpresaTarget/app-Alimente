@@ -56,15 +56,59 @@ public function curtirPostagem(Request $request, $postId)
     ]);
 }
 
-    
+public function destroy($id)
+{
+    // Buscar a postagem pelo ID ou retornar erro se não encontrada
+    $postagem = Postagem::findOrFail($id);
+
+    // Excluir a postagem
+    $postagem->delete();
+
+    // Retornar uma resposta de sucesso
+    return response()->json([
+        'success' => true,
+        'message' => 'Postagem excluída com sucesso!'
+    ]);
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'conteudo' => 'required|string|max:255',
+        'chavePix' => 'nullable|string|max:255',
+        'hashtags' => 'nullable|string',
+        'imagem' => 'nullable|image|max:2048',
+    ]);
+
+    $postagem = Postagem::findOrFail($id);
+
+    $postagem->conteudo = $request->conteudo;
+    $postagem->hashtags = $request->hashtags;
+    $postagem->chavePix = $request->input('chavePix');
+
+    if ($request->hasFile('imagem')) {
+        // Armazenar a imagem e guardar o caminho
+        $path = $request->file('imagem')->store('uploads', 'public');
+        $postagem->imagem = $path;
+    }
+
+    $postagem->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Postagem atualizada com sucesso!'
+    ]);
+}
+
     public function store(Request $request)
     {
         // Validação dos dados recebidos
         $request->validate([
-            'conteudo' => 'required|string',
-            'idOng' => 'required|exists:ong,idOng', // Certifique-se de que o idOng existe na tabela ongs
+            'conteudo' => 'required|string|max:255',
+            'idOng' => 'required|exists:ong,idOng',
             'hashtags' => 'nullable|string',
-            'imagem' => 'nullable|image|max:2048', // Tamanho máximo de 2MB
+            'imagem' => 'nullable|image|max:2048',
+            'chavePix' => 'nullable|string|max:255', 
         ]);
 
         try {
@@ -73,6 +117,7 @@ public function curtirPostagem(Request $request, $postId)
             $postagem->idOng = $request->input('idOng');
             $postagem->conteudo = $request->input('conteudo');
             $postagem->hashtags = $request->input('hashtags');
+            $postagem->chavePix = $request->input('chavePix');
 
             // Tratamento da imagem
             if ($request->hasFile('imagem')) {

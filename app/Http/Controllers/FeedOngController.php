@@ -27,7 +27,7 @@ class FeedOngController extends Controller
         $campanhasCount = Campanha::where('idOng', $ongId)->count();
         $postagensCount = Postagem::where('idOng', $ongId)->count();
 
-        return view('feedOng', compact('campanhas', 'postagensCount', 'campanhasCount', 'ong'));
+        return view('feedOng', compact('campanhas', 'postagens', 'postagensCount', 'campanhasCount', 'ong'));
     } else {
         return redirect()->route('logindoador')->withErrors('Você precisa estar logado para ver suas postagens.');
     }
@@ -95,6 +95,7 @@ public function dashboard()
             'imagemCampanha' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'dataInicioCampanha' => 'nullable|date',
             'dataFimCampanha' => 'nullable|date',
+            'chavePix' => 'nullable|string|max:255',
         ]);
     
         // Verifica se a campanha pertence à ONG autenticada
@@ -124,6 +125,7 @@ public function dashboard()
             'assuntoCampanha' => $campanha->assuntoCampanha,
             'descricaoCampanha' => $campanha->descricaoCampanha,
             'imagemCampanha' => $campanha->imagemCampanha,
+            'chavePix' => $campanha->chavePix,
         ]);
     }
 

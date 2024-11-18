@@ -236,7 +236,7 @@ if (userElement) {
 <div id="pixModal" class="modal-pix" data-post-id="{{ $postagem->idPostagem }}" data-ong-id="{{ $postagem->idOng }}">
     <div class="modal-content-pix">
         <h2>Chave Pix</h2>
-        <img id="qrcode" src="" alt="QR Code" style="width: 200px; height: 200px; margin-top: 5px;"/>
+        <img id="qrcode" src="/img/qrcode.jpg" alt="QR Code" style="width: 200px; height: 200px; margin-top: 5px;"/>
         
         <p id="pixKey" style="margin-top: 6px;">{{ $postagem->chavePix ?? 'Chave Pix não disponível' }}</p>
 

@@ -166,17 +166,6 @@ function showLogoutModal() {
                 @endforeach
             </div>
 
-<!--modais-->
-<div id="notification" class="notification hidden">
-  <div class="notification-content">
-    <span class="notification-icon">⚠️</span>
-    <h2 class="notification-title">PROVE SUA VERACIDADE</h2>
-    <p class="notification-text">Opa, você não realizou sua prestação de contas ainda!</p>
-    <button class="notification-close" onclick="hideNotification()">Fechar</button>
-    <button class="notification-open"><a href="/prestarContaOng">Bora</a></button>
-  </div>
-</div>
-
 <div id="modal-excluir" class="modal-delete">
   <div class="modal-content-delete">
     <h2>Tem certeza que deseja excluir esta postagem?</h2>
@@ -314,6 +303,13 @@ function showLogoutModal() {
         </div>
 </div>
 
+<!-- Modal de Sucesso -->
+<div id="successModal-publi">
+    <div class="modal-content-success-publi">
+        <h3>Causa Atualizada com Sucesso!</h3>
+    </div>
+</div>
+
 <!-- Modal post-->
 <div id="postModal" class="post-modal">
   <div class="post-modal-content">
@@ -365,7 +361,6 @@ function showLogoutModal() {
     </div>
 <script src="/js/postOng.js"></script>
 <script src="/js/novaCampanha.js"></script>
-<script src="/js/notificacao.js"></script>
 
 <!--excluir campanha-->
 <script>

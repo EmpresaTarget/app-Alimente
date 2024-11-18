@@ -67,6 +67,17 @@
         </ul>
     </div>
 
+    <!-- Modal -->
+<div id="successModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" id="modalClose">&times;</span>
+        <div class="modal-icon">
+            <i class="fa fa-check-circle"></i>
+        </div>
+        <p>Você não tem mais prestações de contas para fazer. Pode retornar ao início!</p>
+    </div>
+</div>
+
     <div class="container">
         <div class="text">
             <h1>Prestação de Contas</h1>
@@ -90,48 +101,49 @@
 <input type="hidden" name="idOng" value="{{ Auth::user()->idOng }}">
 
 <div class="container-content">
-    <div class="container-left">
-        <h3>Movimentações:</h3>
-        <label for="balanco">Balanço Patrimonial:</label>
-        <div class="file-upload">
-            <input type="file" name="balanco" id="balanco" required>
-            <i class="fas fa-cloud-upload-alt"></i>
-        </div>
-
-        <label for="demonstracao">Demonstração de Resultados:</label>
-        <div class="file-upload">
-            <input type="file" name="demonstracao" id="demonstracao" required>
-            <i class="fas fa-cloud-upload-alt"></i>
-        </div>
+<div class="container-left">
+    <h3>Movimentações:</h3>
+    <label for="balanco">Balanço Patrimonial:</label>
+    <div class="file-upload">
+        <input type="file" name="balanco" id="balanco" accept="image/*" required>
+        <i class="fas fa-cloud-upload-alt"></i>
     </div>
 
-    <div class="container-right">
-        <h3>Receitas e Despesas:</h3>
-        <label for="receitas">Receitas Totais:</label>
-        <div class="file-upload">
-            <input type="file" name="receitas" id="receitas" required>
-            <i class="fas fa-cloud-upload-alt"></i>
-        </div>
-
-        <label for="despesas">Despesas Totais:</label>
-        <div class="file-upload">
-            <input type="file" name="despesas" id="despesas" required>
-            <i class="fas fa-cloud-upload-alt"></i>
-        </div>
+    <label for="demonstracao">Demonstração de Resultados:</label>
+    <div class="file-upload">
+        <input type="file" name="demonstracao" id="demonstracao" accept="image/*" required>
+        <i class="fas fa-cloud-upload-alt"></i>
     </div>
+</div>
+
+<div class="container-right">
+    <h3>Receitas e Despesas:</h3>
+    <label for="receitas">Receitas Totais:</label>
+    <div class="file-upload">
+        <input type="file" name="receitas" id="receitas" accept="image/*" required>
+        <i class="fas fa-cloud-upload-alt"></i>
+    </div>
+
+    <label for="despesas">Despesas Totais:</label>
+    <div class="file-upload">
+        <input type="file" name="despesas" id="despesas" accept="image/*" required>
+        <i class="fas fa-cloud-upload-alt"></i>
+    </div>
+</div>
     </div>
 
     <div class="container-fotos">
-        <h3>Fotos tiradas referentes à instituição:</h3>
-        <div class="row">
-            @for ($i = 0; $i < 10; $i++)
-                <div class="input-wrapper">
-                    <input type="file" name="fotos[]" />
-                    <i class="fas fa-cloud-upload-alt"></i>
-                </div>
-            @endfor
-        </div>
+    <h3>Fotos de Comprovação da Campanha Finalizada:</h3>
+    <div class="row">
+        @for ($i = 0; $i < 5; $i++)
+            <div class="input-wrapper">
+                <input type="file" name="fotos[]" id="foto-{{$i}}" onchange="previewImage(event, {{$i}})" />
+                <i id="upload-icon-{{$i}}" class="fas fa-cloud-upload-alt"></i>
+                <img id="img-preview-{{$i}}" class="img-preview" src="#" alt="Imagem Previa" style="display:none;"/>
+            </div>
+        @endfor
     </div>
+</div>
 
     <div class="buttons">
         <button type="submit" class="send">Enviar</button>
@@ -141,5 +153,47 @@
 
     </div><!--container-->
 </div><!--wrapper-->
+
+<script>
+    $(document).ready(function() {
+    // Exibir modal de sucesso quando o envio for bem-sucedido
+    @if(session('success'))
+        $('#successModal').show();
+    @endif
+
+    // Fechar o modal
+    $('#modalClose').click(function() {
+        $('#successModal').hide();
+    });
+    
+    // Fechar o modal clicando fora dele
+    $(window).click(function(event) {
+        if ($(event.target).is('#successModal')) {
+            $('#successModal').hide();
+        }
+    });
+});
+</script>
+
+<script>
+  function previewImage(event, index) {
+    var file = event.target.files[0];
+    var reader = new FileReader();
+    
+    reader.onload = function() {
+        var imgElement = document.getElementById('img-preview-' + index);
+        var uploadIcon = document.getElementById('upload-icon-' + index);
+        
+        imgElement.src = reader.result;
+        imgElement.style.display = 'block'; // Exibe a imagem
+        uploadIcon.style.display = 'none'; // Oculta o ícone
+    };
+    
+    if (file) {
+        reader.readAsDataURL(file); // Lê o arquivo selecionado
+    }
+}
+
+</script>
 </body>
 </html>

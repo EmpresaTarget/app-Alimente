@@ -100,41 +100,34 @@ public function update(Request $request, $id)
     ]);
 }
 
-    public function store(Request $request)
-    {
-        // Validação dos dados recebidos
-        $request->validate([
-            'conteudo' => 'required|string|max:255',
-            'idOng' => 'required|exists:ong,idOng',
-            'hashtags' => 'nullable|string',
-            'imagem' => 'nullable|image|max:2048',
-            'chavePix' => 'nullable|string|max:255', 
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'conteudo' => 'required|string|max:255',
+        'idOng' => 'required|exists:ong,idOng',
+        'hashtags' => 'nullable|string',
+        'imagem' => 'nullable|image|max:2048',
+        'chavePix' => 'nullable|string|max:255', 
+    ]);
 
-        try {
-            // Criação de uma nova postagem
-            $postagem = new Postagem();
-            $postagem->idOng = $request->input('idOng');
-            $postagem->conteudo = $request->input('conteudo');
-            $postagem->hashtags = $request->input('hashtags');
-            $postagem->chavePix = $request->input('chavePix');
+    try {
+        $postagem = new Postagem();
+        $postagem->idOng = $request->input('idOng');
+        $postagem->conteudo = $request->input('conteudo');
+        $postagem->hashtags = $request->input('hashtags');
+        $postagem->chavePix = $request->input('chavePix');
 
-            // Tratamento da imagem
-            if ($request->hasFile('imagem')) {
-                // Armazenar a imagem e guardar o caminho
-                $path = $request->file('imagem')->store('uploads', 'public');
-                $postagem->imagem = $path;
-            }
-
-            // Salvar a postagem no banco de dados
-            $postagem->save();
-
-            // Retornar uma resposta JSON de sucesso
-            return response()->json(['message' => 'Postagem criada com sucesso!', 'postagem' => $postagem], 201);
-        } catch (\Exception $e) {
-            // Log do erro para diagnóstico
-            Log::error('Erro ao criar postagem: ' . $e->getMessage());
-            return response()->json(['message' => 'Erro ao criar a postagem.'], 500);
+        if ($request->hasFile('imagem')) {
+            $path = $request->file('imagem')->store('imagens', 'public');
+            $postagem->imagem = $path;
         }
+
+        $postagem->save();
+
+        return response()->json(['success' => true], 200);
+
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
     }
+}
 }

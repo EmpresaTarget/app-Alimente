@@ -22,6 +22,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             margin-top: 60px;
+            margin-right: 55px;
         }
 
         .info-cards {
@@ -137,35 +138,42 @@
         </ul>
     </div>
 
-    <div class="mapa" id="map"></div><!--mapa-->
-    
-    <div class="info-cards">
-    <div class="info-card">
-        <div class="card-header">
-            <h3>Como Utilizar</h3>
-        </div>
-        <div class="card-content">
-            <a href="#" class="read-more">Ler mais <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="content-wrapper">
+    <div class="left-section">
+        <div id="map"></div>
+        <div class="info-cards">
+            <div class="info-card">
+                <div class="card-header">
+                    <h3>Como Utilizar</h3>
+                </div>
+                <div class="card-content">
+                    <a href="#" class="read-more">Ler mais <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="card-header">
+                    <h3>Funcionalidades</h3>
+                </div>
+                <div class="card-content">
+                    <a href="#" class="read-more">Ler mais <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="card-header">
+                    <h3>Dicas Úteis</h3>
+                </div>
+                <div class="card-content">
+                    <a href="#" class="read-more">Ler mais <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="info-card">
-        <div class="card-header">
-            <h3>Funcionalidades</h3>
-        </div>
-        <div class="card-content">
-            <a href="#" class="read-more">Ler mais <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-    </div>
-    <div class="info-card">
-        <div class="card-header">
-            <h3>Dicas Úteis</h3>
-        </div>
-        <div class="card-content">
-            <a href="#" class="read-more">Ler mais <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="right-section">
+        <div class="container-right">
+            <p>...</p>
         </div>
     </div>
 </div>
-<!--info-cards-->
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8YyZUk2tSHm0ON3oPDGWKogkEepg2e00&callback=initMap" async defer></script>
     <script>
@@ -215,48 +223,71 @@
         }
 
         function carregarOngsProximas() {
-            $.getJSON('{{ route("mapa.ongs_proximas") }}', function(data) {
-                data.forEach(ong => {
-                    const ongMarkerIcon = {
-                        url: "/img/marcador.png", // URL do ícon
-                        scaledSize: new google.maps.Size(40, 50),  // Tamanho do ícone da ONG
-                        anchor: new google.maps.Point(25, 25),
-                        origin: new google.maps.Point(0, 0),  // Ponto de origem para o redimensionamento
-                        labelOrigin: new google.maps.Point(25, 55)  // Centraliza o ícone no ponto exato
-                    };
+    $.getJSON('{{ route("mapa.ongs_proximas") }}', function(data) {
+        const container = document.querySelector('.container-right');
+        container.innerHTML = ''; // Limpa o container antes de preencher
 
-                    const marker = new google.maps.Marker({
-                        position: { lat: ong.latitude, lng: ong.longitude },
-                        map: map,
-                        icon: ongMarkerIcon
-                    });
+        const markers = {}; // Para armazenar os marcadores por ID ou nome
 
-                    const contentString = `
-                        <div class="info-window-content">
-                            <img src="${ong.foto}" alt="Foto de ${ong.nome}">
-                            <h3>${ong.nome}</h3>
-                            <p>${ong.biografia}</p>
-                            <button onclick="verPerfil('${ong.nome}')">Ver Perfil</button>
-                        </div>
-                    `;
+        data.forEach(ong => {
+            // Criando um marcador no mapa
+            const ongMarkerIcon = {
+                url: "/img/marcador.png", // URL do ícone
+                scaledSize: new google.maps.Size(40, 50),
+                anchor: new google.maps.Point(25, 25),
+            };
 
-                    const infoWindow = new google.maps.InfoWindow({
-                        content: contentString
-                    });
-
-                    marker.addListener('click', () => {
-                        infoWindow.open(map, marker);
-                    });
-                });
-            }).fail(function() {
-                alert("Não foi possível carregar as ONGs.");
+            const marker = new google.maps.Marker({
+                position: { lat: ong.latitude, lng: ong.longitude },
+                map: map,
+                icon: ongMarkerIcon
             });
-        }
 
-        function verPerfil(nome) {
-            alert(`Abrindo perfil de ${nome}...`);
-            // Redirecionamento ou outra ação pode ser implementada aqui
-        }
+            markers[ong.nome] = marker; // Associa o marcador ao nome da ONG
+
+            // Adicionando conteúdo ao mini card
+            const miniCard = document.createElement('div');
+            miniCard.classList.add('mini-card-geo');
+
+            miniCard.innerHTML = `
+                <img src="${ong.foto}" alt="Foto de ${ong.nome}">
+                <h4>${ong.nome}</h4>
+                <p>perto a você</p>
+            `;
+
+            // Adicionando evento para centralizar o mapa no marcador ao clicar no card
+            miniCard.addEventListener('click', () => {
+                const ongMarker = markers[ong.nome];
+                if (ongMarker) {
+                    map.setCenter(ongMarker.getPosition());
+                    map.setZoom(14); // Ajuste o nível de zoom conforme necessário
+                }
+            });
+
+            container.appendChild(miniCard);
+
+            // Informações do marcador no mapa
+            const contentString = `
+                <div class="info-window-content">
+                    <img src="${ong.foto}" alt="Foto de ${ong.nome}">
+                    <h3>${ong.nome}</h3>
+                    <p>${ong.biografia}</p>
+                </div>
+            `;
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+        });
+    }).fail(function() {
+        alert("Não foi possível carregar as ONGs.");
+    });
+}
+
     </script>
 
 </div><!--wrapper-->

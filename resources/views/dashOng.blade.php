@@ -153,7 +153,7 @@ function showLogoutModal() {
 
                 <div class="card-dash">
                     <div class="card-content">
-                        <div class="number">80%</div>
+                        <div class="number">{{ $porcentagemContasPrestadas }}%</div>
                         <div class="card-name">Contas prestadas</div>
                     </div>
                     <div class="icon-box">
@@ -176,17 +176,6 @@ function showLogoutModal() {
                 </div><!--chart2-->
 
             </div>
-
-            <!--modais-->
-<div id="notification" class="notification hidden">
-  <div class="notification-content">
-    <span class="notification-icon">⚠️</span>
-    <h2 class="notification-title">PROVE SUA VERACIDADE</h2>
-    <p class="notification-text">Opa, você não realizou sua prestação de contas ainda!</p>
-    <button class="notification-close" onclick="hideNotification()">Fechar</button>
-    <button class="notification-open"><a href="/prestarContaOng">Bora</a></button>
-  </div>
-</div>
 
     </div>
 
@@ -265,6 +254,5 @@ new Chart(ctx2, {
 });
     </script>
 
-    <script src="/js/notificacao.js"></script>
     </body>
     </html>

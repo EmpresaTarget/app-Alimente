@@ -70,8 +70,11 @@ class DoadorController extends Controller
     $doador = Doador::find($doadorId);
     
     // Certifique-se de que o relacionamento entre Campanha e Ong esteja configurado corretamente
-    $campanhas = Campanha::with('ong')->orderBy('created_at', 'desc')->get();
-    $postagens = Postagem::with('ong')->orderBy('dataPostagem', 'desc')->get();
+    $campanhas = Campanha::with('ong')
+    ->where('dataFimCampanha', '>', now()) // Filtra as campanhas em andamento
+    ->orderBy('created_at', 'desc')
+    
+    ->get();    $postagens = Postagem::with('ong')->orderBy('dataPostagem', 'desc')->get();
 
     return view('feedDoador', compact('doador', 'campanhas', 'postagens'));
 }

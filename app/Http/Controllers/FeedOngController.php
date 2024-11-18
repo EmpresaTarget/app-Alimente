@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ong;
+use App\Models\PrestacaoConta;
 use App\Models\Campanha;
 use App\Models\Postagem;
 use App\Models\Doacao;
@@ -71,15 +72,32 @@ public function dashboard()
         ->orderBy('mes')
         ->get();
 
-    // Formatar os dados para o JavaScript
-    $doacoesPorMes = $doacoesPorMes->map(function ($doacao) {
-        return [
-            'mes' => $doacao->mes,
-            'total_doacoes' => $doacao->total_doacoes
-        ];
-    });
+        $campanhasFinalizadasCount = Campanha::where('idOng', $ongId)
+        ->where('dataFimCampanha', '<', now())
+        ->count();
 
-        return view('dashOng', compact('campanhas', 'postagensCount', 'campanhasCount', 'ong', 'totalCurtidas', 'totalArrecadado', 'doacoesPorMes', 'campanhasEmAndamentoCount', 'campanhasFinalizadasCount'));
+$contasPrestadasCount = PrestacaoConta::where('idOng', $ongId)->count();
+
+// Calcular as contas pendentes
+$contasPendentesCount = $campanhasFinalizadasCount - $contasPrestadasCount;
+
+// Garantir que a porcentagem não seja negativa
+$porcentagemContasPrestadas = 100 - ($contasPendentesCount * 10);
+
+// A porcentagem não deve ser menor que 0
+if ($porcentagemContasPrestadas < 0) {
+$porcentagemContasPrestadas = 0;
+}       
+        
+            // Formatar os dados para o JavaScript
+        $doacoesPorMes = $doacoesPorMes->map(function ($doacao) {
+            return [
+                'mes' => $doacao->mes,
+                'total_doacoes' => $doacao->total_doacoes
+            ];
+        });
+
+        return view('dashOng', compact('campanhas', 'postagensCount', 'campanhasCount', 'ong', 'totalCurtidas', 'totalArrecadado', 'doacoesPorMes', 'campanhasEmAndamentoCount', 'campanhasFinalizadasCount', 'porcentagemContasPrestadas'));
     } else {
         return redirect()->route('logindoador')->withErrors('Você precisa estar logado para ver suas postagens.');
     }

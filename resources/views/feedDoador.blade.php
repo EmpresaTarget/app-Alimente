@@ -145,10 +145,9 @@ if (userElement) {
     @endforeach
 </div><!--campanhas-->
 
-
 <!-- Modal de Campanha -->
 @foreach($campanhas as $index => $campanha)
-<div id="campaignModal{{ $index }}" class="campaign-modal" style="display:none;">
+<div id="campaignModal{{ $index }}" class="campaign-modal" style="display:none;" >
   <div class="campaign-modal-content">
     <div class="campaign-modal-left">
         <img src="{{ asset('storage/' . $campanha->imagemCampanha) }}" alt="{{ $campanha->nomeCampanha }}" class="campaign-modal-img">
@@ -160,11 +159,29 @@ if (userElement) {
         <p class="campaign-modal-description">{{ $campanha->descricaoCampanha }}</p>
         <h2 class="campaign-highlight-title">Período de Recolha</h2>
         <p class="campaign-period">{{$campanha->dataInicioCampanha}} a {{$campanha->dataFimCampanha}}</p>
+
+        <h2 class="campaign-highlight-title-">Chave Pix</h2>
+        <!-- Exibe a chave Pix diretamente -->
+        <img id="qrcode" src="/img/qrcode.jpg" alt="QR Code"/>
+        <p id="pixKeyCampanha{{ $index }}" class="campaign-pix-key" style="margin-left: 5px;"><b>{{ $campanha->chavePix ?? 'Chave Pix não disponível' }}</b></p>
+        
+        <div class="value-buttons">
+            <button class="value-button" onclick="selectValue(this)">R$2,00</button>
+            <button class="value-button" onclick="selectValue(this)">R$5,00</button>
+            <button class="value-button" onclick="selectValue(this)">R$8,00</button>
+            <button class="value-button" onclick="selectValue(this)">R$10,00</button>
+            <button class="value-button" onclick="selectValue(this)">R$15,00</button>
+            <button class="value-button" onclick="selectValue(this)">R$20,00</button>
+        </div>
+        <p class="recado">*Você pode escolher um dos nossos valores fixos ou digitar sua contribuição manualmente.</p>
+
+        <!-- Imagem do QR Code gerado, o src será atualizado via JS -->
     </div>
     <span class="campaign-close-btn">&times;</span>
   </div>
 </div>
 @endforeach
+
     <div class="feed-container">
     
     @foreach($postagens as $postagem)
@@ -180,6 +197,7 @@ if (userElement) {
                     <span>Ong</span>
                 </h3>
             </div>
+            
             <div class="dot">
                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
             </div>
@@ -220,7 +238,7 @@ if (userElement) {
         <h2>Chave Pix</h2>
         <img id="qrcode" src="" alt="QR Code" style="width: 200px; height: 200px; margin-top: 5px;"/>
         
-        <p id="pixKey" style="margin-top: 6px;"></p>
+        <p id="pixKey" style="margin-top: 6px;">{{ $postagem->chavePix ?? 'Chave Pix não disponível' }}</p>
 
         <div class="value-buttons">
             <button class="value-button" onclick="selectValue(this)">R$2,00</button>
@@ -324,6 +342,7 @@ if (userElement) {
 </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="/js/campanhaDoador.js"></script>
     <script src="/js/curtida.js"></script>
     <script src="/js/hora.js"></script>

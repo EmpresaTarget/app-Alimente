@@ -10,17 +10,20 @@ class CreatePrestacaoContasTable extends Migration
     {
         Schema::create('prestacao_contas', function (Blueprint $table) {
             $table->id();
-            // Garanta que idOng seja do mesmo tipo que a coluna id em ongs
             $table->unsignedBigInteger('idOng');
             $table->string('balanco')->nullable();
             $table->string('demonstracao')->nullable();
             $table->string('receitas')->nullable();
             $table->string('despesas')->nullable();
-            $table->text('fotos')->nullable();
+            $table->string('foto1')->nullable();
+            $table->string('foto2')->nullable();
+            $table->string('foto3')->nullable();
+            $table->string('foto4')->nullable();
+            $table->string('foto5')->nullable();
             $table->foreign('idOng')->references('idOng')->on('ong')->onDelete('cascade');
             $table->timestamps();
         });
-    }    
+    }
 
     public function down()
     {

@@ -71,6 +71,7 @@ document.querySelector('.post-cancel-btn').onclick = function() {
 };
 
 // Botão de enviar
+// Botão de enviar
 document.querySelector('.post-send-btn').onclick = function() {
   var formData = new FormData();
   var conteudo = postTextarea.value.trim(); // Obter o valor do textarea e remover espaços em branco
@@ -104,13 +105,18 @@ document.querySelector('.post-send-btn').onclick = function() {
   .then(response => response.json()) // Extrair o JSON diretamente
   .then(data => {
     if (data.success) {
-      postModal.style.display = "none"; // Fecha o modal
-      postTextarea.value = ''; // Limpa o conteúdo da textarea
-      imagePreview.innerHTML = ''; // Limpa a pré-visualização da imagem
-      hashtags = []; // Limpa as hashtags
-      displayHashtags(); // Atualiza a exibição das hashtags
-      location.reload(); // Recarrega a página para exibir a nova postagem
-  } else {
+      // Fecha o modal
+      postModal.style.display = "none";
+      
+      // Limpa os campos
+      postTextarea.value = '';
+      imagePreview.innerHTML = '';
+      hashtags = [];
+      displayHashtags();
+
+      // Recarrega a página
+      location.reload();
+    } else {
       // Se o backend indicar falha, lança o erro com a mensagem do backend
       throw new Error(data.message || 'Erro desconhecido ao criar a postagem.');
     }
@@ -157,68 +163,57 @@ document.querySelectorAll('.button-editar').forEach(button => {
   });
 });
 
+function showSuccessModal() {
+  const modal = document.getElementById('successModal-publi');
+  modal.style.display = 'flex'; // Mostra o modal
+  setTimeout(() => {
+      modal.style.display = 'none'; // Oculta o modal após 900ms
+  }, 900);
+}
+
 // Função para editar a postagem
 function editarPostagem(postId) {
-  const conteudo = postTextarea.value.trim(); 
-  const chavePix = document.getElementById('chavePix').value.trim(); 
-  console.log('Conteúdo enviado:', conteudo);  
-  console.log('Chave PIX enviada:', chavePix);  
+  const conteudo = postTextarea.value.trim();
+  const chavePix = document.getElementById('chavePix').value.trim();
 
   if (!conteudo) {
       alert('Por favor, insira um conteúdo para a postagem.');
       return;
   }
 
-  const formData = new FormData();
-  formData.append('conteudo', conteudo);
-  formData.append('hashtags', hashtags.join(', '));
-  formData.append('chavePix', chavePix); 
-
-  const idOng = document.getElementById('idOng').value;
-  formData.append('idOng', idOng);
-
-  const fileInput = document.getElementById('postUploadImage');
-  if (fileInput.files[0]) {
-      formData.append('imagem', fileInput.files[0]);
-  }
-
-  for (let pair of formData.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]);
-  }
-
   const data = {
-    conteudo: conteudo,
-    hashtags: hashtags.join(', '),
-    chavePix: chavePix, 
-    idOng: idOng,
-};
+      conteudo: conteudo,
+      hashtags: hashtags.join(', '),
+      chavePix: chavePix,
+      idOng: document.getElementById('idOng').value,
+  };
 
-fetch(`/postagem/${postId}`, {
-    method: 'PUT',
-    headers: {
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        'Accept': 'application/json',
-        'Content-Type': 'application/json', 
-    },
-    body: JSON.stringify(data),
-})
-.then(response => response.json())
-.then(data => {
-    if (data.success) {
-        alert(data.message);
-        postModal.style.display = 'none';
-        postTextarea.value = '';
-        imagePreview.innerHTML = '';
-        hashtags = [];
-        displayHashtags();
-    } else {
-        throw new Error(data.message || 'Erro ao editar a postagem.');
-    }
-})
-.catch(error => {
-    console.error('Erro:', error);
-    alert(error.message);
-});
+  fetch(`/postagem/${postId}`, {
+      method: 'PUT',
+      headers: {
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.success) {
+          showSuccessModal(); // Exibir o modal de sucesso
+          postModal.style.display = 'none';
+          postTextarea.value = '';
+          imagePreview.innerHTML = '';
+          hashtags = [];
+          displayHashtags();
+      } else {
+          throw new Error(data.message || 'Erro ao editar a postagem.');
+      }
+  })
+  .catch(error => {
+      console.error('Erro:', error);
+      alert(error.message);
+  });
 }
 
 const btnExcluir = document.querySelectorAll('.button-excluir');

@@ -1284,3 +1284,26 @@ body {
     text-align: center;
     width: 300px;
 }
+
+#successModal-publi {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: none; /* Modal inicialmente oculto */
+}
+
+.modal-content-success-publi {
+    background: #fff; /* Fundo branco */
+    color: #000; /* Texto preto */
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Destaque */
+    width: 300px;
+    min-height: auto; /* Define uma altura mínima */
+    text-align: center; /* Centraliza o conteúdo */
+}
+

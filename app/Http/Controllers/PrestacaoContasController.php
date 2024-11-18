@@ -14,20 +14,20 @@ class PrestacaoContasController extends Controller
     {
         $user = Auth::user();
         $idOng = $user->idOng;
-    
+        
         // Recuperar campanhas finalizadas para essa ONG
         $campanhasFinalizadasCount = Campanha::where('idOng', $idOng)
                                              ->where('dataFimCampanha', '<', now())
                                              ->count();
-    
+        
         // Verificar quantas contas já foram prestadas pela ONG
         $contasPrestadasCount = PrestacaoConta::where('idOng', $idOng)->count();
-    
+        
         // Validar se a ONG não ultrapassou o número de contas a serem prestadas
         if ($contasPrestadasCount >= $campanhasFinalizadasCount) {
             return redirect()->back()->with('noPrestations', true);
         }
-    
+        
         // Validação dos arquivos
         $request->validate([
             'idOng' => 'required|exists:ong,idOng',
@@ -37,23 +37,23 @@ class PrestacaoContasController extends Controller
             'despesas' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'fotos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
-        // Armazenar os arquivos
-        $balancoPath = $request->file('balanco')->store('prestacoes_contas');
-        $demonstracaoPath = $request->file('demonstracao')->store('prestacoes_contas');
-        $receitasPath = $request->file('receitas')->store('prestacoes_contas');
-        $despesasPath = $request->file('despesas')->store('prestacoes_contas');
-    
+        
+        // Armazenar os arquivos publicamente
+        $balancoPath = $request->file('balanco')->storePublicly('prestacoes_contas', 'public');
+        $demonstracaoPath = $request->file('demonstracao')->storePublicly('prestacoes_contas', 'public');
+        $receitasPath = $request->file('receitas')->storePublicly('prestacoes_contas', 'public');
+        $despesasPath = $request->file('despesas')->storePublicly('prestacoes_contas', 'public');
+        
         // Armazenar fotos individualmente
         $fotosPaths = [];
         for ($i = 0; $i < 5; $i++) {
             if ($request->hasFile("fotos.$i")) {
-                $fotosPaths[$i] = $request->file("fotos.$i")->store('prestacoes_contas/fotos');
+                $fotosPaths[$i] = $request->file("fotos.$i")->storePublicly('prestacoes_contas/fotos', 'public');
             } else {
                 $fotosPaths[$i] = null;
             }
         }
-    
+        
         // Salvar a prestação de contas no banco de dados
         PrestacaoConta::create([
             'idOng' => $idOng,
@@ -67,11 +67,10 @@ class PrestacaoContasController extends Controller
             'foto4' => $fotosPaths[3],
             'foto5' => $fotosPaths[4],
         ]);
-    
+        
         return redirect()->back()->with('success', 'Prestação de contas enviada com sucesso!');
-     }
+    }
     
-
 public function index()
 {
     $prestacoes = PrestacaoConta::with('ong')->get(); // Carrega as prestações de contas com as ONGs

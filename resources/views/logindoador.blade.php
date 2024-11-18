@@ -125,7 +125,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <a href="">Esqueceu a senha? Clique aqui para redefinir.</a>
+                    <a href="/codNovaSenha">Esqueceu a senha? Clique aqui para redefinir.</a>
                 </div>
                 <button type="submit" class="btn login-btn w-100">Login</button>
                 <div class="mt-3 text-center">

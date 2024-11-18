@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--icon-->
     <link rel="shortcut icon" href="/img/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Alimente</title>
     <style>
         /* Reset básico */
@@ -532,6 +533,109 @@
             clip-path: polygon(0 100%, 100% 80%, 100% 100%, 0 100%); /* Forma geométrica */
             z-index: -1; /* Para ficar atrás do conteúdo */
         }
+
+        .modal {
+            display: none; /* Escondido por padrão */
+            position: fixed;
+            z-index: 1000;
+            inset: 0; /* Alinha o modal ao topo e laterais */
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 10px; /* Reduzido para um espaçamento mais compacto */
+            border-radius: 8px;
+            width: 70%; /* Largura reduzida */
+            max-width: 250px; /* Largura máxima ajustada */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra mais sutil */
+            text-align: center;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 5px; /* Ajustado */
+            right: 5px; /* Ajustado */
+            font-size: 18px; /* Reduzido para um tamanho mais discreto */
+            font-weight: bold;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+            gap: 4px; /* Espaçamento menor entre os elementos do formulário */
+            margin-top: 10px; /* Reduzido */
+        }
+
+        .modal-content form input,
+        .modal-content form button {
+            padding: 6px; /* Reduzido */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 12px; /* Tamanho da fonte reduzido */
+        }
+
+        .modal-content form button {
+            background-color: #3c64e7;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .modal-content form button:hover {
+            background-color: #3c64b8;
+        }
+
+        .modal-content img {
+            width: 100%; /* Ajusta a largura da imagem para ocupar toda a largura do modal */
+            max-width: 150px; /* Define um tamanho máximo para a imagem */
+            height: auto; /* Mantém a proporção da imagem */
+            margin-bottom: 10px; /* Espaçamento abaixo da imagem */
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Cor de fundo do botão */
+            color: white; /* Cor do texto */
+            text-align: center;
+            text-decoration: none; /* Remove o sublinhado */
+            border: none; /* Remove a borda */
+            border-radius: 5px; /* Cantos arredondados */
+            cursor: pointer; /* Muda o cursor ao passar o mouse */
+        }
+
+        .button:hover {
+            background-color: #45a049; /* Cor de fundo ao passar o mouse */
+        }
+
+         /* Estilos para o botão */
+    #admin-button {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background-color: #007bff; /* Cor de fundo */
+        color: white; /* Cor do ícone */
+        padding: 12px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #admin-button:hover {
+        background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+    }
+
     </style>
 
 
@@ -656,32 +760,37 @@
             <img src="img/alimento.jfif" alt="Campanha 1">
             <h3>Doação de Alimento</h3>
             <p>Doe um alimento para transformar vidas, levando esperança e dignidade para quem mais precisa.</p>
-            <button id="campanhaModal">Doar Agora</button>
+            <button class="button-nav" onclick="openModal('Escaneie o Código')">Doar Agora</button>
         </div>
         <div class="card-campanha">
             <img src="img/produto2.jfif" alt="Campanha 2">
             <h3>Produtos de Higiene Pessoal</h3>
             <p> Doe produtos de higiene pessoal e faça a diferença na vida de muitas famílias.</p>
-            <button>Doar Agora</button>
+            <button class="button-nav" onclick="openModal('Escaneie o Código')">Doar Agora</button>
         </div>
         <div class="card-campanha">
             <img src="img/roupas2.jfif" alt="Campanha 3">
             <h3>Doação em Roupas</h3>
             <p>Aqueça corações com sua solidariedade e faça a diferença na vida de quem precisa. </p>
-            <button>Doar Agora</button>
+            <button class="button-nav" onclick="openModal('Escaneie o Código')">Doar Agora</button>
         </div>
         <div class="card-campanha">
             <img src="img/pet2.jfif" alt="Campanha 3">
             <h3>Ajude um Pet</h3>
             <p> Ajude um pet em necessidade, doando ração ou medicamentos.</p>
-            <button>Doar Agora</button>
+            <button class="button-nav" onclick="openModal('Escaneie o Código')">Doar Agora</button>
         </div>
     </div>
 
- <div class="modal" id="modal">
-    
- </div>
-
+<!-- Modal único -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h3 id="modal-title"></h3>
+        <img src="/img/qrcode.jpg" alt="">
+        <a href="/logindoador" class="button">Ver mais Campanhas</a>
+    </div>
+</div>
 
     <!--IMAGENS CRIATIVAS-->
 <section id="imagens-criativas">
@@ -705,40 +814,34 @@
 <br><br>
 <!-- COLABORADORES-->
 <section id="parceiros">
-<h2 class="features-title">Conheça Nossos Colaboradores</h2>
+    <h2 class="features-title">Conheça Nossos Projetos Colaboradores</h2>
     <div class="colaboradores-container">
         <div class="colaborador">
             <div class="foto-perfil">
-                <img src="img/target.jfif" alt="Colaborador 1">
+                <img src="/img/Logo-Materna.png" alt="Colaborador 1">
             </div>
-            <h3>Target</h3>
-            <p>Empresa de tecnologia</p>
+            <h3>Materna</h3>
+            <p>Desenvolvido pela empresa Elysium</p>
         </div>
         <div class="colaborador">
             <div class="foto-perfil">
-                <img src="img/elysium.jfif" alt="Colaborador 2">
+                <img src="/img/amigodesangue.png" alt="Colaborador 2">
             </div>
-            <h3>Elysium</h3>
-            <p>Empresa de tecnologia</p>
+            <h3>Amigo de Sangue</h3>
+            <p>Desenvolvido pela empresa Apex</p>
         </div>
         <div class="colaborador">
             <div class="foto-perfil">
                 <img src="img/apex.jfif" alt="Colaborador 3">
             </div>
-            <h3>Apex</h3>
-            <p>Empresa de tecnologia</p>
-        </div>
-        <div class="colaborador">
-            <div class="foto-perfil">
-                <img src="img/union.jfif" alt="Colaborador 3">
-            </div>
-            <h3>Union</h3>
-            <p>Empresa de tecnologia</p>
+            <h3>IAcademy</h3>
+            <p>Desenvolvido pela empresa Union</p>
         </div>
     </div>
 </section>
 <br><br>
 <!-- FOOTER-->
+
 <footer>
     <div class="footer-background-shape"></div> 
     <div class="footer-container">
@@ -748,6 +851,7 @@
                 <p>Trabalhamos para promover e apoiar ONGs na divulgação de suas campanhas.</p>
             </div>
             <div class="footer-section">
+        
                 <h4>Links Úteis</h4>
                 <ul>
                     <li><a href="#sobre">Quem Somos?</a></li>
@@ -766,7 +870,55 @@
             <p>&copy; 2024 Target. Todos os direitos reservados.</p>
         </div>
     </div>
+
+    <div id="admin-button" onclick="adminAccess()">
+    <i class="fas fa-user"></i>
+</div>
 </footer>
+
+<script>
+const isAdmin = true; // Este valor deve ser definido pelo servidor
+
+// Mostrar o botão se o usuário for administrador
+if (isAdmin) {
+    document.getElementById("admin-button").style.display = "block";
+}
+
+// Função para o clique no botão
+function adminAccess() {
+    alert("Acesso de administrador!");
+    // Coloque aqui o redirecionamento ou função para o acesso admin
+    window.location.href = "/loginAdm"; // Exemplo de redirecionamento
+}
+
+    function openModal(campaignTitle) {
+        document.getElementById("modal").style.display = "flex";
+        document.getElementById("modal-title").innerText = campaignTitle;
+    }
+
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+    }
+
+    // Fecha o modal se clicar fora dele
+    window.onclick = function(event) {
+        var modal = document.getElementById("modal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+<script>
+    // Função para o clique no botão
+    function adminAccess() {
+        alert("Acesso de administrador!");
+        window.location.href = "/loginAdm";
+        // Coloque aqui o redirecionamento ou função para o acesso admin
+        // Por exemplo: window.location.href = "/admin-dashboard";
+    }
+</script>
+
 </body>
 </html>
 

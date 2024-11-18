@@ -32,8 +32,9 @@ class Doador extends Model implements AuthenticatableContract
         'causasPreferidasDoador',
         'dataCadastroDoador',
         'denunciasRealizadasDoador',
-        'nomeUsuarioDoador', // Novo campo
-        'biografiaDoador'    // Novo campo
+        'nomeUsuarioDoador',
+        'biografiaDoador',
+        'reset_token',   
     ];
 
     // Define que o campo senhaDoador é a senha
@@ -50,8 +51,6 @@ class Doador extends Model implements AuthenticatableContract
     {
         return $this->senhaDoador; // Aqui indicamos que a senha vem de senhaDoador
     }
-
-    
 
      // Esses métodos são implementados pelo trait `Authenticatable`
     // Certifique-se de que eles estão corretamente configurados:

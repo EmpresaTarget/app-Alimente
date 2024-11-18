@@ -71,7 +71,6 @@ Route::get('/criarperfildoador', [DoadorController::class, 'showCreateProfile'])
 // Rota para armazenar o perfil do doador
 Route::post('/criarperfildoador', [DoadorController::class, 'storeProfile'])->name('doador.storeProfile');
 
-
 /*Ong cadastro*/
 Route::get('/cadastroOng', [OngController::class, 'showFirstStep'])->name('ong.cadastro');
 Route::post('/cadastroOng', [OngController::class, 'storeFirstStep'])->name('ong.store.first');
@@ -179,21 +178,14 @@ Route::post('/postagem', [PostagemController::class, 'store']);
 // routes/web.php ou routes/api.php
 Route::post('/curtir-postagem', [PostagemController::class, 'curtirPostagem']);
 
-/* Rotas para login
+/**redefinição */
 
-// Página de Registro
-Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [RegisterController::class, 'register']);
+Route::get('/codNovaSenha', function() {
+    return view('codNovaSenha');
+});
 
-// Página de Redefinição de Senha
-Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
-Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
-
-// Rota para o dashboard após o login
-Route::get('dashboard', function () {
-    return view('dashboard'); // Certifique-se de ter essa view criada
-})->middleware('auth');
-Auth::routes();*/
+Route::post('/esqueci-senha', [PasswordResetController::class, 'sendResetLink'])->name('password.email');
+Route::get('/reset-password', [PasswordResetController::class, 'showResetForm'])->name('password.reset'); // Ajuste
+Route::post('/resetar-senha', [PasswordResetController::class, 'resetPassword'])->name('password.update');
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])->name('password.update');

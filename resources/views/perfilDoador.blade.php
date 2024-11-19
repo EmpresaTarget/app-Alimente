@@ -188,7 +188,6 @@
 
 </form>
 
-
         <!-- Modal de Confirmação -->
         <div id="confirmationModal" class="modal-perfil" style="display:none;">
             <div class="modal-content-perfil">
@@ -196,6 +195,14 @@
                 <button id="closeModal" class="close-modal-perfil">Fechar</button>
             </div>
         </div>
+
+        <div id="modal-confirmacao" class="modal" style="display:none;">
+        <div class="modal-content">
+            <p>Tem certeza de que deseja excluir sua conta?</p>
+            <button id="cancelar-exclusao">Cancelar</button>
+            <button id="confirmar-exclusao">Confirmar</button>
+        </div>
+    </div>
 
         <!-- Tela de Configurações (inicialmente oculta) -->
         <form class="account-settings">
@@ -218,5 +225,23 @@
 <script src="/js/logoutDoador.js"></script>
 <script src="/js/atualizarDoador.js"></script>
 <script src="/js/atualizarFotoDoador.js"></script>
+
+<script>
+        // Exibe o modal de confirmação
+        $('#btn-excluir-conta').click(function(){
+            $('#modal-confirmacao').show();
+        });
+
+        // Fecha o modal ao cancelar
+        $('#cancelar-exclusao').click(function(){
+            $('#modal-confirmacao').hide();
+        });
+
+        // Exclui a conta (a ação de exclusão pode ser implementada aqui)
+        $('#confirmar-exclusao').click(function(){
+            alert('Conta excluída!');
+            $('#modal-confirmacao').hide();
+        });
+    </script>
 </body>
 </html>

@@ -267,23 +267,22 @@ if (userElement) {
     </div>
 </div>
 
-<div id="commentModal" class="modal">
-    
+<div id="commentModal" class="modal"> 
   <div class="modal-content">
     <span class="close" onclick="closeModalComent()">&times;</span>
     
     <div class="modal-left">
-    @foreach($postagens as $postagem)
-    @if($postagem->imagem)
-        <img src="{{ asset('storage/' . $postagem->imagem) }}" alt="Postagem">
-    @endif
-@endforeach
-            </div>
+      @foreach($postagens as $postagem)
+        @if($postagem->imagem)
+          <img src="{{ asset('storage/' . $postagem->imagem) }}" alt="Postagem">
+        @endif
+      @endforeach
+    </div>
     
     <div class="modal-right">
       <h3>Comentários</h3>
       <div class="comments-section" id="comments-section">
-        <!-- Comentários serão adicionados aqui -->
+        <!-- Comentários simulados serão adicionados aqui -->
       </div>
       
       <div class="addComments-modal">
@@ -356,98 +355,57 @@ if (userElement) {
 </script>
 
     <script>
-    // Abre o modal ao clicar no ícone de comentário
-    // Abre o modal ao clicar no ícone de comentário
+   // Abre o modal ao clicar no ícone de comentário
 document.querySelectorAll('.comment-button').forEach(button => {
-    button.addEventListener('click', function() {
-        const idPostagem = this.getAttribute('data-id');  // Pegando o id da postagem
-        
+    button.addEventListener('click', function () {
         // Exibe o modal
         document.getElementById("commentModal").style.display = "block";
-        
-        // Carregar os comentários para a postagem
-        loadComments(idPostagem);  // Chama a função de carregar os comentários
     });
 });
 
 // Fecha o modal
 function closeModalComent() {
     document.getElementById("commentModal").style.display = "none";
+
+    // Limpa os comentários adicionados ao fechar o modal
+    document.getElementById('comments-section').innerHTML = '';
 }
 
 // Fecha o modal ao clicar fora dele
 window.onclick = function (event) {
     const modal = document.getElementById("commentModal");
     if (event.target == modal) {
-        modal.style.display = "none";
+        closeModalComent();
     }
-}
-
-// Função para carregar os comentários
-function loadComments(idPostagem) {
-    fetch(`/comentarios/${idPostagem}`)
-        .then(response => response.json())
-        .then(data => {
-            const commentSection = document.getElementById('comments-section');
-            commentSection.innerHTML = '';  // Limpa os comentários existentes
-
-            // Adiciona os novos comentários
-            data.comentarios.forEach(comentario => {
-                const commentDiv = document.createElement('div');
-                commentDiv.classList.add('comment');
-                commentDiv.innerHTML = `
-                    <img src="${comentario.fotoDoador}" alt="Foto do Doador" class="comment-profile-img">
-                    <div class="comment-content">
-                        <b>${comentario.nomeDoador}:</b> ${comentario.conteudo}
-                    </div>
-                `;
-                commentSection.appendChild(commentDiv);
-            });
-        })
-        .catch(error => console.error('Erro ao carregar os comentários:', error));
 }
 
 // Função para adicionar um comentário
 function addComment() {
     const commentInput = document.getElementById('comment-input');
     const commentText = commentInput.value.trim();
-    const idPostagem = document.querySelector('.comment-button').getAttribute('data-id');  // Pega o ID da postagem
 
-    if (commentText && idPostagem) {
-        fetch('/comentarios', {
-            method: 'POST',
-            body: JSON.stringify({
-                idPostagem: idPostagem,  // Passa o idPostagem para o backend
-                conteudo: commentText
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Adicionar o novo comentário na tela
-            const commentSection = document.getElementById('comments-section');
-            const commentDiv = document.createElement('div');
-            commentDiv.classList.add('comment');
-            commentDiv.innerHTML = `
-                <img src="${data.comentario.fotoDoador}" alt="Foto de perfil" class="comment-profile-img">
-                <div class="comment-content">
-                    <b>${data.comentario.nomeDoador}:</b> ${data.comentario.conteudo}
-                   
-                </div>
-            `;
-            commentSection.appendChild(commentDiv);
+    if (commentText) {
+        // Cria um novo elemento de comentário
+        const commentSection = document.getElementById('comments-section');
+        const commentDiv = document.createElement('div');
+        commentDiv.classList.add('comment');
+        commentDiv.innerHTML = `
+            <div class="user">
+                <img src="{{ asset('storage/' . $doador->fotoDoador) }}" alt="Foto do Doador" class="comment-profile-img">
+            </div>
+            <div class="comment-content">
+                <b>{{ $doador->nomeDoador }}:</b> ${commentText}
+            </div>
+        `;
 
-            // Limpar o input de comentário
-            commentInput.value = '';
-        })
-        .catch(error => console.error('Erro ao adicionar comentário:', error));
+        // Adiciona o comentário na seção de comentários
+        commentSection.appendChild(commentDiv);
+
+        // Limpa o input de comentário
+        commentInput.value = '';
     }
 }
 
-// Função para curtir um comentário
     </script>
 
 <script>

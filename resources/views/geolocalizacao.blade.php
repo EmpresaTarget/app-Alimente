@@ -87,6 +87,13 @@
     color: #2c5f2d; /* Verde mais escuro */
 }
 
+.logout-button{
+    padding: 5px 10px;
+    color: 4f7942;
+    background-color: #ddd;
+    border-radius: 5px;
+}
+
     </style>
        <!--icon-->
        <link rel="shortcut icon" href="/img/icon.png" type="image/x-icon">
@@ -110,11 +117,9 @@
                 <img src="/img/alimente.png" alt="">
             </div>
             <li>
-                <form action="{{ route('logout') }}" method="POST" id="logoutForm" style="display: inline;">
+            <form action="{{ route('logout') }}" method="POST" id="logoutForm" style="display: inline;">
             @csrf
-           <button type="button" href="/logindoador" class="logout-button">
-                <i class="fa-solid fa-right-from-bracket menu-icon"></i> Logout
-            </button>
+            <button type="submit" class="logout-button"><i class="fa-solid fa-right-from-bracket menu-icon"></i> Logout</button>
         </form></li>
         </div>
     </div>

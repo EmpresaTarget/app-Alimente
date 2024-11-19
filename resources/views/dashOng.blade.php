@@ -71,7 +71,7 @@ function showLogoutModal() {
                     <i class="fa-solid fa-users"></i> Perfil
                     </a>
                     <button type="button" onclick="showLogoutModal()" class="logout-button">
-    <i class="fa-solid fa-right-from-bracket menu-icon"></i> Logout
+    <i class="fa-solid fa-right-from-bracket menu-icon"></i> <a href="/logindoador">Logout</a>
 </button>
                 </div>
             </div>

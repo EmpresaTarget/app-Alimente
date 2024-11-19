@@ -44,7 +44,7 @@
                     <i class="fa-solid fa-users"></i> Perfil
                     </a>
                     <a href="#logout">
-                    <i class="fa-solid fa-right-from-bracket menu-icon"></i> Logout
+                    <i class="fa-solid fa-right-from-bracket menu-icon"></i><a href="/logindoador">Logout</a>
                     </a>
                 </div>
             </div>

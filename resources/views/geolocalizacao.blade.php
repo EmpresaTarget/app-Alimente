@@ -119,7 +119,7 @@
             <li>
             <form action="{{ route('logout') }}" method="POST" id="logoutForm" style="display: inline;">
             @csrf
-            <button type="submit" class="logout-button"><i class="fa-solid fa-right-from-bracket menu-icon"></i> Logout</button>
+            <button type="submit" class="logout-button"><i class="fa-solid fa-right-from-bracket menu-icon"></i> <a href="/logindoador">Logout</a></button>
         </form></li>
         </div>
     </div>

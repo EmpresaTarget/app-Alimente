@@ -106,3 +106,25 @@ form .button:hover {
     height: auto;
     cursor: pointer;
 }
+
+/*ícone de olho */
+.password-container {
+    position: relative;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 30px; /* Deixa o espaço para o ícone de olho */
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #333;
+}

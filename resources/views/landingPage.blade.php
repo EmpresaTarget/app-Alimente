@@ -361,6 +361,7 @@
         .card-campanha button {
             background-color: #58695f;
             color: white;
+            margin-top: 10px;
             padding: 10px 20px;
             border: none;
             border-radius: 50px;
@@ -418,7 +419,7 @@
         #colaboradores {
             padding: 50px 0;
             text-align: center;
-            background-color:  #f9f9f9;
+            background-color:  #fff;
         }
 
         #colaboradores h2 {
@@ -440,8 +441,8 @@
         .foto-perfil {
             width: 200px;
             height: 200px;
-            background-color:  #f9f9f9;
-            border-radius: 50%;
+            background-color:  #fff;
+            padding: 5px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -832,7 +833,7 @@
         </div>
         <div class="colaborador">
             <div class="foto-perfil">
-                <img src="img/apex.jfif" alt="Colaborador 3">
+                <img src="/img/iacademy.png" alt="Colaborador 3">
             </div>
             <h3>IAcademy</h3>
             <p>Desenvolvido pela empresa Union</p>

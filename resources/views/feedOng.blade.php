@@ -365,7 +365,6 @@ function showLogoutModal() {
 <!--excluir campanha-->
 <script>
 $(document).ready(function() {
-    // Abre o modal de exclusão quando o botão de excluir é clicado
     $(document).on('click', '.delete-button', function() {
         const idCampanha = $(this).data('id');
         $('#delete-campaign-name').text('Nome da Campanha: ' + $(this).closest('.content').find('.title').text());
